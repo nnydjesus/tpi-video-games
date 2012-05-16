@@ -5,7 +5,7 @@ import scala.collection.mutable.Buffer
 
 trait EventGameComponent[T <: EventGameComponent[T]] {
 
-  private var listeners = Map[String, Buffer[Function[T,_]]]()
+  private var listeners = Map[String, Buffer[Function[T, _]]]()
 
   protected def dispatchEvent[A <: Any](event: Event[T, A]) {
     listeners.keys.foreach(key => {
@@ -15,35 +15,28 @@ trait EventGameComponent[T <: EventGameComponent[T]] {
     })
   }
 
-  def addEventListener[A <: Any](eventName: String, listener: (Event[T, A]) => Unit) {
+  def addEventListener[A <: Any](eventName: String, listener: Function[T, A]) {
     if (!listeners.contains(eventName)) {
       listeners(eventName) = Buffer()
     }
-    listeners(eventName).append(new Function(listener))
+    listeners(eventName).append(listener)
+
+  }
+
+  def addEventListener[A <: Any](eventName: String, listener: (Event[T, A]) => Unit) {
+    this.addEventListener(eventName, new Function(listener))
+  }
+
+  def removeEventListener[A <: Any](eventName: String, listener: Function[T, A]) {
+    if (listeners.contains(eventName)) {
+      listeners(eventName).-=(listener)
+//      listeners(eventName).clear()
+    }
   }
 
   def removeEventListener[A <: Any](eventName: String, listener: (Event[T, A]) => Unit) {
-    if (listeners.contains(eventName)) {
-//      listeners(eventName).-=(new Function(listener))
-      listeners(eventName).clear()
-    }
+    this.removeEventListener(eventName, new Function(listener))
   }
-  
+
 }
 
-
-private class Function[A, B]( val listener:(Event[A,B]) =>Unit){
-  
-  def apply(event:Event[A, _]) = event match{
-    case e:Event[A, B] => listener(e)
-  }
-  
-  override def equals(any:Any):Boolean={
-    any match{
-      case function:Function[A, B] => listener == function.listener
-      case _ => false
-    }
-  }
-  
-  override def hashCode() = listener.hashCode()
-}
