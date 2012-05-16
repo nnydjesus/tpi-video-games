@@ -7,12 +7,10 @@ import com.uqbar.vainilla.DesktopGameLauncher
 import com.uqbar.vainilla.Game
 
 import ar.edu.unq.tpi.resource.TraitResources
-import ar.edu.unq.tpi.traits.Event
+import ar.edu.unq.tpi.traits.{Event, Function}
 import ar.unq.tpi.components.Selectable
 
 class Fight extends Game with TraitResources {
-
-	var state : StateRaund = FirstRaund		  
 
   protected def initializeResources(): Unit = {
   }
@@ -27,14 +25,14 @@ class Fight extends Game with TraitResources {
   }
 
   def playGame(character: CharacterAppearance, arena: Selectable) {
-    var loading = new LoadingScene(this)
-    setCurrentScene(loading)
+    setCurrentScene(new LoadingScene())
     var gameScene: GamePlayScene = new GamePlayScene(this, character, arena)
     setCurrentScene(gameScene)
-    gameScene.addEventListener(GameEvents.FINISH_FIGTH, finishFigth)
+    gameScene.addEventListener(GameEvents.FINISH_FIGTH, new Function(finishFigth))
+    gameScene.startRound(FirstRaund)
   }
   
-  def finishFigth(event:Event[GamePlayScene, Nothing]){
+  def finishFigth(event:Event[GamePlayScene, Any]){
     setUpScenes()
   }
 
@@ -51,4 +49,5 @@ object MainFight {
     new DesktopGameLauncher(new Fight()).launch();
   }
 }
+
 

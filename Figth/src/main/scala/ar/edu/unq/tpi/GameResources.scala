@@ -7,7 +7,15 @@ object GameEvents {
   val COLLIDE_WITH_BOUND_RIGTH = "COLLIDE_WITH_BOUND_RIGTH"
   val DEATH = "DEATH"
   val FINISH_FIGTH= "FINISH_FIGTH"
+   val FINISH_ANIMATION = "FINISH_ANIMATION" 
 
+}
+
+
+object GameValues {
+  
+  val PLAYER_LIFE = 100D
+  val VICTORYS_TO_WIN = 2
 }
 
 object GameImage extends TraitResources{
@@ -18,4 +26,7 @@ object GameImage extends TraitResources{
   lazy val BUTTON_START = sprite("start.png")
   lazy val SWORD = sprite("sword.png")
   lazy val LOADING = sprite("loading.png")
+  lazy val ROUND_1 = getImage("round1.png")
+  lazy val ROUND_2 = getImage("round2.png")
+  lazy val ROUND_FINISH = getImage("roundfinal.png")
 }

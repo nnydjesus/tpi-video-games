@@ -17,6 +17,7 @@ import ar.unq.tpi.components.SelectComponent
 import ar.unq.tpi.components.SelectScene
 import ar.unq.tpi.components.Selectable
 import ar.unq.tpi.components.SpriteComponent
+import com.uqbar.vainilla.Game
 
 class InitialScene(game: Fight) extends GameScene() with TraitResources {
 
@@ -29,8 +30,12 @@ class InitialScene(game: Fight) extends GameScene() with TraitResources {
   })
 }
 
-class LoadingScene(game: Fight) extends GameScene() with TraitResources {
-  this.addComponent(new SpriteComponent(ScaleSpriteComponent.scale(GameImage.LOADING, this.game.getDisplayWidth(), this.game.getDisplayHeight()), 0, 0))
+class LoadingScene() extends GameScene() with TraitResources {
+  
+  override def setGame(game:Game){
+    super.setGame(game)
+    this.addComponent(new SpriteComponent(ScaleSpriteComponent.scale(GameImage.LOADING, this.getGame().getDisplayWidth(), this.getGame().getDisplayHeight()), 0, 0))
+  }
 }
 
 class SelectArenaScene(game: Fight, character: CharacterAppearance) extends SelectScene() {

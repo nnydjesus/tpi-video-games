@@ -5,32 +5,32 @@ import com.uqbar.vainilla.appearances.Sprite
 import com.uqbar.vainilla.DeltaState
 import resource.SpriteUtil
 import com.uqbar.vainilla.Game
-import ar.unq.tpi.components.AnimateSprite
 import ar.unq.tpi.components.CenterComponent
+import ar.unq.tpi.components.AnimateSprite
 
-abstract class StateRaund {
-	
-  var countVictorysChF : Int = 0
-  var countVictorysChS : Int = 0
-  def symbolOfVictory : Sprite = SpriteUtil.sprite("symbol.png")
-  def isFirstWin() = countVictorysChF > countVictorysChS
-  def stepNext(fight : Fight)
+abstract class StateRaund(var animationRound:AnimateSprite ) {
+  def symbolOfVictory: Sprite = SpriteUtil.sprite("symbol.png")
+  def stepNext(scene: GamePlayScene)
 }
 
-object FirstRaund extends StateRaund {
+object FirstRaund extends StateRaund(new AnimateSprite(GameImage.ROUND_1)) {
 
-  def stepNext(fight : Fight){
-  fight.state = SecondRaund
+  def stepNext(scene: GamePlayScene) {
+    scene.startRound(SecondRaund)
   }
 }
-object SecondRaund extends StateRaund{
+object SecondRaund extends StateRaund(new AnimateSprite(GameImage.ROUND_2)) {
 
-  def stepNext(fight : Fight){
-   fight.state = LastRaund
+  def stepNext(scene: GamePlayScene) {
+    if (scene.countVictorysChF >= GameValues.VICTORYS_TO_WIN || scene.countVictorysChS >= GameValues.VICTORYS_TO_WIN) {
+    	scene.finishFigth()
+    } else {
+    	scene.startRound(LastRaund)
+    }
   }
 }
-object LastRaund extends StateRaund{
-  def stepNext(figth : Fight){
-  //
+object LastRaund extends StateRaund(new AnimateSprite(GameImage.ROUND_FINISH)) {
+  def stepNext(scene: GamePlayScene) {
+    scene.finishFigth()
   }
 }

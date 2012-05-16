@@ -65,7 +65,7 @@ object Ragna extends CharacterAppearance {
   this.selectedImage = sprite("ragna/ragnaSelected.png")
   //
   this.addMove(HIGH_KICK1, new FightMoves("rg201_", ragnaPatadas1, ragnaPatadas1XML, 10))
-  this.addMove(HIGH_KICK2, new FightMoves("rg211_", ragnaPatadas2, ragnaPatadas2XML, 20))
+  this.addMove(HIGH_KICK2, new FightMoves("rg211_", ragnaPatadas2, ragnaPatadas2XML, 50))
   this.addMove(LOW_KICK1, new FightMoves("rg231_", ragnaPatadas3, ragnaPatadas3XML, 10))
   this.addMove(LOW_KICK2, new FightMoves("rg312_", ragnaPatadas4, ragnaPatadas4XML, 20))
 
@@ -137,7 +137,7 @@ def configureAppearance{
     this.addMove(HIGH_PUCH1, new FightMoves("lc210_", litchiGolpes, litchiGolpesXML, 10))
     this.addMove(HIGH_PUCH2, new FightMoves("lc210_", litchiGolpes, litchiGolpesXML, 10))
     this.addMove(LOW_PUNCH2, new FightMoves("lc232_", litchiGolpes, litchiGolpesXML, 10))
-    this.addMove(LOW_PUNCH1, new FightMoves("lc312_", litchiGolpes, litchiGolpesXML, 10))
+    this.addMove(LOW_PUNCH1, new FightMoves("lc312_", litchiGolpes, litchiGolpesXML, 50))
 
     //FAKE
     //  this.addMove(HIGH_KICK1, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))

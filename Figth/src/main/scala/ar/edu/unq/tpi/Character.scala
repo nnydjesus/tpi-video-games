@@ -9,14 +9,15 @@ class Character(var envelope:CharacterAppearance){
 
   var death = false
 
-  private var _life = 100D
+  var life = 100D
 
-  def life() = this._life
+  def getLife() = this.life
+  
   
   def getMove(move: Movement) = envelope.getMove(move)
 
   def receiveAttack(force: Double) {
-    _life  -= force
+    life  -= force
     if(life <= 0){
       this.death = true
     }
