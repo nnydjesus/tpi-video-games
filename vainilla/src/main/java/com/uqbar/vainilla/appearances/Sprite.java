@@ -53,7 +53,7 @@ public class Sprite extends SimpleAppearance<Sprite> {
 		return this.getImage().getHeight();
 	}
 
-	protected BufferedImage getTransformedImage(AffineTransform transformation) {
+	public BufferedImage getTransformedImage(AffineTransform transformation) {
 		AffineTransformOp transformOperation = new AffineTransformOp(transformation, AffineTransformOp.TYPE_BICUBIC);
 
 		return transformOperation.filter(this.getImage(), new BufferedImage(
@@ -187,7 +187,7 @@ public class Sprite extends SimpleAppearance<Sprite> {
 		return this.image;
 	}
 
-	protected void setImage(BufferedImage currentImage) {
+	public void setImage(BufferedImage currentImage) {
 		this.image = currentImage;
 	}
 	

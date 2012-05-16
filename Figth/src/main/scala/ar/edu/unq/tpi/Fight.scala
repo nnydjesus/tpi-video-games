@@ -12,6 +12,7 @@ import ar.unq.tpi.components.Selectable
 
 class Fight extends Game with TraitResources {
 
+	var state : StateRaund = FirstRaund		  
 
   protected def initializeResources(): Unit = {
   }
@@ -50,5 +51,4 @@ object MainFight {
     new DesktopGameLauncher(new Fight()).launch();
   }
 }
-
 
