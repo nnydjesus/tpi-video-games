@@ -22,6 +22,8 @@ object GameValues {
 object GameImage extends TraitResources{
   lazy val LIFE_BAR = sprite("hud/cp15_lifegage_Y.png")
   lazy val BACKGROUND_BAR = sprite("hud/cp15_main03.png")
+  lazy val HUD_BAR_1 = sprite("hud/cp15_ee.png")
+  lazy val HUD_BAR_2 = sprite("hud/cp15_dd.png")
   lazy val WIN_IMAGE = getImage("win.png")
   lazy val LOSE_IMAGE = getImage("lose.png")
   lazy val BUTTON_START = sprite("start.png")

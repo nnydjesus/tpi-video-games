@@ -55,7 +55,9 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
     this.addComponent(new Stats(0, 0))
 
     this.addComponents(backGround)
-    this.addComponents(character1, character2, new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, 100, 100, character1.character.getLife), new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, 1000, 100, character2.character.getLife))
+    this.addComponents(character1, character2, 
+        new LifeBar(GameImage.LIFE_BAR.flipHorizontally(), GameImage.BACKGROUND_BAR.flipHorizontally(), GameImage.HUD_BAR_1.flipHorizontally(), GameImage.HUD_BAR_2.flipHorizontally(), character.selectedImage.crop(50,30, 150, 190).scale(80D/100, 100D/160), true, 50, 50, character1.character.getLife), 
+        new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, GameImage.HUD_BAR_1, GameImage.HUD_BAR_2, character2.character.envelope.selectedImage.crop(50,30, 150, 190).scale(80D/100, 100D/160), false, 700, 50, character2.character.getLife))
   }
 
   def startRound(state: StateRaund) {
