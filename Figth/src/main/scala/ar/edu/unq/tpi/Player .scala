@@ -2,6 +2,7 @@ package ar.edu.unq.tpi
 import com.uqbar.vainilla.events.constants.Key
 import com.uqbar.vainilla.DeltaState
 import scala.collection.mutable.Buffer
+import ar.edu.unq.tpi.traits.FunctionSceneListener
 
 abstract class Player {
   var LEFT: Key
@@ -28,13 +29,13 @@ abstract class Player {
   def character = this._character
   def character_=(anCharacter: CharacterFight) = {
     this._character = anCharacter
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1, character.attack(HIGH_KICK1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2, character.attack(HIGH_KICK2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1, character.attack(LOW_KICK1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2, character.attack(LOW_KICK2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1, character.attack(LOW_PUNCH1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2, character.attack(LOW_PUNCH2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1, character.attack(HIGH_PUCH1))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1, new FunctionSceneListener((d)=>character.changeMove(HIGH_KICK1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2, new FunctionSceneListener((d)=>character.changeMove(HIGH_KICK2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1, new FunctionSceneListener((d)=>character.changeMove(LOW_KICK1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2, new FunctionSceneListener((d)=>character.changeMove(LOW_KICK2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1, new FunctionSceneListener((d)=>character.changeMove(LOW_PUNCH1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1, new FunctionSceneListener((d)=>character.changeMove(HIGH_PUCH1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2, new FunctionSceneListener((d)=>character.changeMove(LOW_PUNCH2)))
   }
 
   def update(deltaState: DeltaState): Boolean = {
@@ -44,9 +45,9 @@ abstract class Player {
     }
     if (deltaState.isKeyBeingHold(this.LEFT) && deltaState.isKeyBeingHold(this.RIGHT) && deltaState.isKeyBeingHold(this.K_HIGH_PUCH1)) {
       character.attack(COMBO1)(deltaState)
-    } else if (deltaState.isKeyPressed(this.LEFT)) {
+    } else if (deltaState.isKeyBeingHold(this.LEFT)) {
       character.walkLeft(deltaState)
-    } else if (deltaState.isKeyPressed(this.RIGHT)) {
+    } else if (deltaState.isKeyBeingHold(this.RIGHT)) {
       character.walkRight(deltaState)
     } else {
       character.changeMove(IDLE)

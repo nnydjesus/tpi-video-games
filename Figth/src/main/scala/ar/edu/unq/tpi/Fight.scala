@@ -7,7 +7,7 @@ import com.uqbar.vainilla.DesktopGameLauncher
 import com.uqbar.vainilla.Game
 
 import ar.edu.unq.tpi.resource.TraitResources
-import ar.edu.unq.tpi.traits.{Event, Function}
+import ar.edu.unq.tpi.traits.{Event, FunctionEvent}
 import ar.unq.tpi.components.Selectable
 
 class Fight extends Game with TraitResources {
@@ -16,8 +16,8 @@ class Fight extends Game with TraitResources {
   }
 
   protected def setUpScenes(): Unit = {
-    setCurrentScene(new SelectCharacterScene(this))
-//        playGame(Ragna, Arena1)
+//    setCurrentScene(new SelectCharacterScene(this))
+        playGame(Ragna, Arena1)
   }
 
   def selectArena(character: SelectableCharacter) {
@@ -28,7 +28,7 @@ class Fight extends Game with TraitResources {
     setCurrentScene(new LoadingScene())
     var gameScene: GamePlayScene = new GamePlayScene(this, character, arena)
     setCurrentScene(gameScene)
-    gameScene.addEventListener(GameEvents.FINISH_FIGTH, new Function(finishFigth))
+    gameScene.addEventListener(GameEvents.FINISH_FIGTH, new FunctionEvent(finishFigth))
     gameScene.startRound(FirstRaund)
   }
   

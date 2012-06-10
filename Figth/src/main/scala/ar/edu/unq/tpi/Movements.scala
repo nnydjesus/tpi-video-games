@@ -13,78 +13,56 @@ abstract class Movement {
   }
 }
 
-object SELECTED extends Movement{
+class AttackMovement() extends Movement{
+  override def update(character:CharacterFight, deltaState:DeltaState){
+    character.attack(this)(deltaState)
+  }
+}
+
+case object SELECTED extends Movement{
   override def update(character:CharacterFight, deltaState:DeltaState){
     
   }
 }
 
-object IDLE extends Movement{
+case object IDLE extends Movement{
+  override def update(character:CharacterFight, deltaState:DeltaState){
+  }
+}
+
+case object WALK extends Movement{
   override def update(character:CharacterFight, deltaState:DeltaState){
     
   }
 }
 
-object WALK extends Movement{
+case object WALK_BACK extends Movement{
   override def update(character:CharacterFight, deltaState:DeltaState){
     
   }
 }
 
-object WALK_BACK extends Movement{
+case object KICKED extends Movement{
   override def update(character:CharacterFight, deltaState:DeltaState){
     
   }
 }
 
-object HIGH_KICK1 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object HIGH_KICK1 extends AttackMovement
+case object LOW_KICK1 extends AttackMovement
+case object HIGH_KICK2 extends AttackMovement
 
-object LOW_KICK1 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object HIGH_PUCH1 extends AttackMovement
 
-object HIGH_KICK2 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
-object HIGH_PUCH1 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object HIGH_PUCH2 extends AttackMovement
 
-object HIGH_PUCH2 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object LOW_PUNCH2 extends AttackMovement
 
-object LOW_PUNCH2 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object LOW_PUNCH1 extends AttackMovement
 
-object LOW_PUNCH1 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object LOW_KICK2 extends AttackMovement
 
-object LOW_KICK2 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
-
-object JUMP extends Movement{
+case object JUMP extends Movement{
   var inUp = true
   
   override def update(character:CharacterFight, deltaState:DeltaState){
@@ -92,14 +70,15 @@ object JUMP extends Movement{
       character.isMoving = true
       inUp = true
       character.move(0, -30)
+      character.getAppearance().advance()
     }else{
       if(character.getY() < character.baseY ){
         inUp = false
         character.isMoving = true
         character.move(0, 30)
-//        character.getAppearance().advance()
-      }else{
         character.getAppearance().advance()
+      }else{
+//        character.getAppearance().advance()
         character.isMoving = false
         inUp = true	
       }
@@ -107,11 +86,7 @@ object JUMP extends Movement{
   }
 }
 
-object COMBO1 extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
-}
+case object COMBO1 extends AttackMovement
 
 object Orientation extends Enumeration {
  type Orientation = Value

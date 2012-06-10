@@ -16,11 +16,12 @@ object GameValues {
   
   val PLAYER_LIFE = 100D
   val VICTORYS_TO_WIN = 2
+  val DELTA_BACK_MOVE = 15
 }
 
 object GameImage extends TraitResources{
-  
-  lazy val LIFE_BAR = sprite("barra.png")
+  lazy val LIFE_BAR = sprite("hud/cp15_lifegage_Y.png")
+  lazy val BACKGROUND_BAR = sprite("hud/cp15_main03.png")
   lazy val WIN_IMAGE = getImage("win.png")
   lazy val LOSE_IMAGE = getImage("lose.png")
   lazy val BUTTON_START = sprite("start.png")
@@ -29,4 +30,5 @@ object GameImage extends TraitResources{
   lazy val ROUND_1 = getImage("round1.png")
   lazy val ROUND_2 = getImage("round2.png")
   lazy val ROUND_FINISH = getImage("roundfinal.png")
+  lazy val COLLITION = sprite("vrrgef450atk_01.png")
 }

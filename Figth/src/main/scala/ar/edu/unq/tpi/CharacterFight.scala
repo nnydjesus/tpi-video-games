@@ -1,9 +1,12 @@
 package ar.edu.unq.tpi
-import com.uqbar.vainilla.events.constants.Key
-import com.uqbar.vainilla.DeltaState
-import javax.imageio.ImageIO
 import com.uqbar.vainilla.appearances.Animation
+import com.uqbar.vainilla.appearances.Sprite
+import com.uqbar.vainilla.DeltaState
 import ar.edu.unq.tpi.traits.Event
+import ar.edu.unq.tpi.traits.FunctionEvent
+import ar.edu.unq.tpi.traits.RoundComponent
+import ar.unq.tpi.components.SpriteComponent
+import ar.unq.tpi.components.GenericGameEvents
 
 class CharacterFight(player: Player, var character: Character, var scene: GamePlayScene, x: Int, staticY: Int) extends Actor[GamePlayScene, CharacterFight](null, x, staticY) {
 
@@ -24,7 +27,9 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
   }
 
   override def changeMove(move: Movement) = {
-    changeMove(move, orientation)
+    if(!isMoving){
+    	changeMove(move, orientation)
+    }
   }
 
   def walk() = {
@@ -44,6 +49,9 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     } else {
       this.move(-force, 0)
     }
+    
+    changeMove(KICKED)
+    isMoving = true
 
     if (this.character.death) {
       dispatchEvent(new Event(GameEvents.DEATH, this))
@@ -52,7 +60,7 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
 
   def attack(attack: Movement)(delta: DeltaState) {
     if (!isMoving) {
-      this.changeMove(attack)
+//      this.changeMove(attack)
       isMoving = true;
       pego = false
       damageOponent()
@@ -63,11 +71,19 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     if (!pego && collidesWith(oponent)) {
       pego = true
       oponent.receiveAttack(character.getMove(currentMove).force)
+      
+      var spriteX= this.getX() + positionOnCollition._1 - (GameImage.COLLITION.getWidth()/2)
+      var spriteY= this.getY() + positionOnCollition._2 - (GameImage.COLLITION.getHeight()/2)
+      var sprite = new SpriteComponent[GamePlayScene](GameImage.COLLITION, spriteX, spriteY) with RoundComponent[GamePlayScene, Sprite]{override val meantime =1D}
+      sprite.addEventListener(GenericGameEvents.FINISH_ANIMATION, new FunctionEvent((e:Event[RoundComponent[GamePlayScene, Sprite], Any]) => sprite.destroy()))
+      scene.addComponent(sprite)
+      
     }
   }
 
   override def update(deltaState: DeltaState) = {
 
+  currentMove.update(this, deltaState)
     if (isMoving) {
       isMoving = !this.getAppearance().finish()
       damageOponent()
@@ -80,13 +96,12 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
       if (!player.update(deltaState)) {
         super.update(deltaState)
       }
-
       updateOrientationRelativeToOponent()
     }
-    if (currentMove == JUMP) {
-      currentMove.update(this, deltaState)
-    } else {
-      this.setY(baseY)
+    
+    
+    if (currentMove != JUMP) {
+    	this.setY(baseY)
     }
 
   }
@@ -113,8 +128,10 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     this.getAppearance().advance()
 
     isMoving = false;
-    if (collidesWith(scene.boundLeft)) {
-      dispatchEvent(new Event(GameEvents.COLLIDE_WITH_BOUND_LEFT, this, this.orientation))
+    if (this.collideWithBoundLeft ) {
+      if(!oponent.collideWithBoundRigth){
+    	  dispatchEvent(new Event(GameEvents.COLLIDE_WITH_BOUND_LEFT, this, this.orientation))
+      }
       this.move(-moveX, 0)
     }
 
@@ -134,15 +151,19 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     this.getAppearance().advance()
     isMoving = false;
 
-    if (collidesWith(scene.boundRigth)) {
-      dispatchEvent(new Event(GameEvents.COLLIDE_WITH_BOUND_RIGTH, this, this.orientation))
+    if (this.collideWithBoundRigth) {
+      if(!oponent.collideWithBoundLeft){
+    	  dispatchEvent(new Event(GameEvents.COLLIDE_WITH_BOUND_RIGTH, this, this.orientation))
+      }
       this.move(-moveX, 0)
     }
     if (collidesWith(oponent)) {
       this.move(-moveX, 0)
     }
-
   }
+  
+  def collideWithBoundRigth = collidesWith(scene.boundRigth)
+  def collideWithBoundLeft = collidesWith(scene.boundLeft)
 
   def walkToOponent(deltaState: DeltaState) {
     if (this.getX() > oponent.getX()) {

@@ -76,6 +76,7 @@ object Ragna extends CharacterAppearance {
   this.addMove(LOW_PUNCH1, new FightMoves("rg230_", ragnaGolpe2, ragnaGolpe2XML, 10))
 
   this.addMove(COMBO1, new FightMoves("rg212_", ragnaCombos, ragnaCombosXML, 10))
+  this.addMove(KICKED, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 0.05))
 
     //FAKE    
     //  this.addMove(HIGH_KICK1, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))
@@ -116,15 +117,15 @@ def configureAppearance{
   */
 
   this.selectedImage = sprite("litchi/litchiSelected.png")
-  this.addMove(IDLE, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))
+//  this.addMove(IDLE, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))
   this.addMove(JUMP, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))
 
   this.addMove(WALK, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0))
   this.addMove(WALK_BACK, new FightMoves("lc031_", litchiWalk, litchiWalkXML, 0))
 
-  this.selectedImage = sprite("litchi/litchiSelected.png")
+//  this.selectedImage = sprite("litchi/litchiSelected.png")
     this.addMove(IDLE, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
-    this.addMove(JUMP, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
+//    this.addMove(JUMP, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
   
     this.addMove(WALK, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0))
     this.addMove(WALK_BACK, new FightMoves("lc031_", litchiWalk, litchiWalkXML, 0))
@@ -138,6 +139,8 @@ def configureAppearance{
     this.addMove(HIGH_PUCH2, new FightMoves("lc210_", litchiGolpes, litchiGolpesXML, 10))
     this.addMove(LOW_PUNCH2, new FightMoves("lc232_", litchiGolpes, litchiGolpesXML, 10))
     this.addMove(LOW_PUNCH1, new FightMoves("lc312_", litchiGolpes, litchiGolpesXML, 50))
+    
+    this.addMove(KICKED, new FightMoves("lc211_", litchiPatadas, litchiPatadasXML, 0.5))
 
     //FAKE
     //  this.addMove(HIGH_KICK1, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))

@@ -1,17 +1,22 @@
 package ar.edu.unq.tpi
 
 import com.uqbar.vainilla.appearances.Sprite
-import com.uqbar.vainilla.Game
-import com.uqbar.vainilla.GameComponent
 import com.uqbar.vainilla.GameScene
 
-import ar.edu.unq.tpi.resource.TraitResources
+import ar.edu.unq.tpi.traits.EventGameComponent
 import ar.edu.unq.tpi.traits.Event
 import ar.edu.unq.tpi.traits.EventGameScene
-import ar.edu.unq.tpi.traits.Function
+import ar.edu.unq.tpi.traits.FunctionEvent
+import ar.edu.unq.tpi.BoundsScene
+import ar.edu.unq.tpi.CharacterAppearance
+import ar.edu.unq.tpi.CharacterFight
+import ar.edu.unq.tpi.Fight
+import ar.edu.unq.tpi.traits.RoundComponent
+import ar.edu.unq.tpi.StateRaund
+import ar.unq.tpi.components.ScrollingBackroundComponent
+import ar.unq.tpi.components.SpriteComponent
 import ar.unq.tpi.components.AnimateSprite
 import ar.unq.tpi.components.CenterComponent
-import ar.unq.tpi.components.ScrollingBackroundComponent
 import ar.unq.tpi.components.ScrollingSprite
 import ar.unq.tpi.components.Selectable
 import ar.unq.tpi.components.Stats
@@ -27,16 +32,16 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
 
-  var finishAnimation = new CenterComponent(winAnimate, game.getDisplayWidth(), game.getDisplayHeight())
+  var finishAnimation = new SpriteCenterComponent(winAnimate, game.getDisplayWidth(), game.getDisplayHeight(), 100)
   var state: StateRaund = FirstRaund
   var countVictorysChF: Int = 0
   var countVictorysChS: Int = 0
   var backGround: ScrollingBackroundComponent[GameScene] = null
   
-  val ON_LEFT_MAP_MOVE = new Function(onLeftMapMove)
-  val ON_RIGTH_MAP_MOVE = new Function(onRigthMapMove)
-  val ON_DEATH_1 = new Function(onDeath1)
-  val ON_DEATH_2 = new Function(onDeath2)
+  val ON_LEFT_MAP_MOVE = new FunctionEvent(onLeftMapMove)
+  val ON_RIGTH_MAP_MOVE = new FunctionEvent(onRigthMapMove)
+  val ON_DEATH_1 = new FunctionEvent(onDeath1)
+  val ON_DEATH_2 = new FunctionEvent(onDeath2)
 
   def this(game: Fight, character: CharacterAppearance, arena: Selectable) {
     this(game, character)
@@ -45,12 +50,12 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
     character2.oponent = character1
 
     var backGroundSprite = arena.image.scale((2 * game.getDisplayWidth()) / arena.image.getWidth(), game.getDisplayHeight() / arena.image.getHeight())
-    backGround = new ScrollingBackroundComponent[GameScene](new ScrollingSprite(backGroundSprite.getImage(), game.getDisplayWidth()), 0, 0)
+    backGround = new ScrollingBackroundComponent[GameScene](new ScrollingSprite(backGroundSprite.getImage(), game.getDisplayWidth(), GameValues.DELTA_BACK_MOVE), 0, 0)
 
     this.addComponent(new Stats(0, 0))
 
     this.addComponents(backGround)
-    this.addComponents(character1, character2, new LifeBar(GameImage.LIFE_BAR, 100, 100, character1.character.getLife), new LifeBar(GameImage.LIFE_BAR, 1000, 100, character2.character.getLife))
+    this.addComponents(character1, character2, new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, 100, 100, character1.character.getLife), new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, 1000, 100, character2.character.getLife))
   }
 
   def startRound(state: StateRaund) {
@@ -66,14 +71,14 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
     character2.setX(1200)
     character2.setY(700)
     
-    val roundComponent = new RoundComponent(this.state.animationRound, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 2)
-    roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new Function(onStart))
+    val roundComponent = new SpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(),getGame().getDisplayHeight(), 2)
+    roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new FunctionEvent(onStart))
     
     this.addComponent(roundComponent)
     
   }
   
-  def onStart(event:Event[RoundComponent, Any]){
+  def onStart(event:Event[RoundComponent[GamePlayScene, Sprite], Any]){
 	  this.removeComponent(event.target)
 	  configureListeners()
     
@@ -129,14 +134,22 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
   }
 
   def onRigthMapMove(event: Event[CharacterFight, Orientation.Orientation]) {
-    backGround.sprite.avance()
+    if(backGround.sprite.avance()){
+    	event.target.oponent.move(-GameValues.DELTA_BACK_MOVE,0)
+    }
   }
 
   def onLeftMapMove(event: Event[CharacterFight, Orientation.Orientation]) {
-    backGround.sprite.retroceder()
+    if(backGround.sprite.retroceder()){
+    	event.target.oponent.move(GameValues.DELTA_BACK_MOVE,0)
+    }
   }
 
   def centerX = game.getDisplayWidth() / 2
   def centerY = game.getDisplayHeight() / 2
 
 }
+
+class SpriteCenterComponent(sprite:Sprite,override val width:Double, override val height:Double, override val meantime:Double ) extends SpriteComponent[GamePlayScene](sprite, 0,0) 
+		with CenterComponent[GamePlayScene, Sprite] with RoundComponent[GamePlayScene, Sprite]{}
+
