@@ -2,7 +2,6 @@ package ar.edu.unq.tpi
 
 import com.uqbar.vainilla.appearances.Sprite
 import com.uqbar.vainilla.GameScene
-
 import ar.edu.unq.tpi.traits.EventGameComponent
 import ar.edu.unq.tpi.traits.Event
 import ar.edu.unq.tpi.traits.EventGameScene
@@ -21,6 +20,7 @@ import ar.unq.tpi.components.ScrollingSprite
 import ar.unq.tpi.components.Selectable
 import ar.unq.tpi.components.Stats
 import traits.EventGameComponent
+import com.uqbar.vainilla.Game
 
 class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
 
@@ -37,11 +37,13 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
   var countVictorysChF: Int = 0
   var countVictorysChS: Int = 0
   var backGround: ScrollingBackroundComponent[GameScene] = null
+  var hud:Hud = _
   
   val ON_LEFT_MAP_MOVE = new FunctionEvent(onLeftMapMove)
   val ON_RIGTH_MAP_MOVE = new FunctionEvent(onRigthMapMove)
   val ON_DEATH_1 = new FunctionEvent(onDeath1)
   val ON_DEATH_2 = new FunctionEvent(onDeath2)
+  
 
   def this(game: Fight, character: CharacterAppearance, arena: Selectable) {
     this(game, character)
@@ -55,10 +57,14 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
     this.addComponent(new Stats(0, 0))
 
     this.addComponents(backGround)
-    this.addComponents(character1, character2, 
-        new LifeBar(GameImage.LIFE_BAR.flipHorizontally(), GameImage.BACKGROUND_BAR.flipHorizontally(), GameImage.HUD_BAR_1.flipHorizontally(), GameImage.HUD_BAR_2.flipHorizontally(), character.selectedImage.crop(50,30, 150, 190).scale(80D/100, 100D/160), true, 50, 50, character1.character.getLife), 
-        new LifeBar(GameImage.LIFE_BAR, GameImage.BACKGROUND_BAR, GameImage.HUD_BAR_1, GameImage.HUD_BAR_2, character2.character.envelope.selectedImage.crop(50,30, 150, 190).scale(80D/100, 100D/160), false, 700, 50, character2.character.getLife))
+    this.addComponents(character1, character2)
   }
+  
+ override def setGame(game:Game){
+   super.setGame(game)
+   hud = new Hud(this)
+   hud.init()
+ }
 
   def startRound(state: StateRaund) {
     this.state = state
@@ -110,11 +116,13 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
   def onDeath1(event: Event[CharacterFight, Any]) {
     this.countVictorysChF += 1
     onDeath(loseAnimate)
+    hud.addvictoy2()
   }
 
   def onDeath2(event: Event[CharacterFight, Any]) {
     this.countVictorysChS += 1
     onDeath(winAnimate)
+    hud.addvictoy1()
   }
 
   def onDeath(finishAnimationAppearance: AnimateSprite) {

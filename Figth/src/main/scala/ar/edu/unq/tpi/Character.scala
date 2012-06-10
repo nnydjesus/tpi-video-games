@@ -10,8 +10,13 @@ class Character(var envelope:CharacterAppearance){
   var death = false
 
   var life = 100D
+  var score:BigInt = BigInt("1000000000000")
 
   def getLife() = this.life
+  
+  def addScore(add:Float) = score += BigInt(add.toInt)
+  
+  def getScore() = score
   
   
   def getMove(move: Movement) = envelope.getMove(move)

@@ -70,7 +70,9 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
   def damageOponent() {
     if (!pego && collidesWith(oponent)) {
       pego = true
-      oponent.receiveAttack(character.getMove(currentMove).force)
+      val force = character.getMove(currentMove).force
+      oponent.receiveAttack(force)
+      this.character.addScore(20*force.toFloat)
       
       var spriteX= this.getX() + positionOnCollition._1 - (GameImage.COLLITION.getWidth()/2)
       var spriteY= this.getY() + positionOnCollition._2 - (GameImage.COLLITION.getHeight()/2)
