@@ -16,8 +16,8 @@ class Fight extends Game with TraitResources {
   }
 
   protected def setUpScenes(): Unit = {
-//    setCurrentScene(new SelectCharacterScene(this))
-        playGame(Ragna, Arena1)
+    setCurrentScene(new SelectCharacterScene(this))
+//        playGame(Ragna, Arena1)
   }
 
   def selectArena(character: SelectableCharacter) {
@@ -25,11 +25,11 @@ class Fight extends Game with TraitResources {
   }
 
   def playGame(character: CharacterAppearance, arena: Selectable) {
-    setCurrentScene(new LoadingScene())
-    var gameScene: GamePlayScene = new GamePlayScene(this, character, arena)
+    setCurrentScene(new LoadingScene(character, Litchi))
+    var gameScene: GamePlayScene = new GamePlayScene(this, character, Litchi,  arena)
     setCurrentScene(gameScene)
     gameScene.addEventListener(GameEvents.FINISH_FIGTH, new FunctionEvent(finishFigth))
-    gameScene.startRound(FirstRaund)
+    gameScene.startRound(FirstRound)
   }
   
   def finishFigth(event:Event[GamePlayScene, Any]){
@@ -38,7 +38,7 @@ class Fight extends Game with TraitResources {
 
 
   def getDisplaySize(): Dimension = Toolkit.getDefaultToolkit().getScreenSize()
-
+  
   def getTitle(): String = "Demo"
 
 }
