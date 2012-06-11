@@ -21,6 +21,16 @@ class LabelComponent[SceneType <: GameScene](var text: String, font: Font, color
 
 }
 
+class DynamicLabelComponent[SceneType <: GameScene](var text: () => Any, font: Font, color: Color, x: Double, y: Double) extends GameComponent[SceneType, Label](
+  new Label(font, color, ""), x, y) with ComponentUtils[SceneType, Label] {
+
+  override def update(deltaState: DeltaState) {
+    super.update(deltaState)
+    this.getAppearance().setText(text().toString())
+  }
+
+}
+
 class LabelImageComponent[SceneType <: EventGameScene](sprite: Sprite, var label: Label, x: Double, y: Double, text: (DeltaState) => String)
   extends SpriteComponent[SceneType](sprite, x, y) {
 
