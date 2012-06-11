@@ -87,6 +87,7 @@ class SelectCharacterScene(game: Fight) extends SelectScene() {
   var characterSecondSelected: SelectableCharacter = new SelectableCharacter(Litchi)
   this.matrixCharacter.loadSelectedCharacter(characterFirstSelected)
   this.matrixCharacter.loadSelectedCharacter(characterSecondSelected)
+  
   var imageBigAllCharacter : Sprite = this.matrixCharacter.paintSelectedCharacter()
   var imageSelectedFirstCharacter = new GameComponent[GameScene, Animation](characterFirstSelected.character.selectedAnimation,-150,200)	
   var imageSelectedSecondCharacter = new GameComponent[GameScene, Animation](characterSecondSelected.character.selectedAnimation,700 , 200)	
