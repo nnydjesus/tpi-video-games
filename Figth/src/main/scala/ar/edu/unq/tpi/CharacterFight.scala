@@ -173,8 +173,8 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     } else {
       walkRight(deltaState)
     }
-
   }
+  
 
   var deltaWidth = 300
   var deltaHeight = 150

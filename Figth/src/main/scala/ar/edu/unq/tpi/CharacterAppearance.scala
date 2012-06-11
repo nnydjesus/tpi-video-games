@@ -9,11 +9,12 @@ abstract class CharacterAppearance(any: Any) extends TraitResources {
 
   def this() {
     this(null)
-    this.configureAppearance()
+    configureBaseAppearance
   }
-
+  
   var name: String = _
 
+  def configureBaseAppearance()
   def configureAppearance()
 
   val movements = new HashMap[Movement, FightMoves]()
@@ -25,19 +26,26 @@ abstract class CharacterAppearance(any: Any) extends TraitResources {
 
   def getMove(move: Movement) = this.movements(move)
 
-  def selectedAnimation = getMove(IDLE).getAnimation(Orientation.LEFT)
+  def selectedAnimation = getMove(IDLE).getAnimation(Orientation.RIGHT)
 }
 
 object Ragna extends CharacterAppearance {
 
-  def configureAppearance {
-
-    this.name = "Ragna"
-
-    var meantimeAnimation = 0.001
-
+  def configureBaseAppearance() {
+    this.selectedImage = sprite("ragna/ragnaSelected.png")
     var ragnaWalk = sprite("ragna/walk.png")
     var ragnaWalkXML = xmlFromFile("img/ragna/walk.xml")
+    this.addMove(IDLE, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))
+    this.addMove(WALK, new FightMoves("wl", ragnaWalk, ragnaWalkXML, 0))
+    this.addMove(WALK_BACK, new FightMoves("wr", ragnaWalk, ragnaWalkXML, 0))
+    this.addMove(JUMP, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 2))
+    this.addMove(KICKED, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 0.05))
+    this.name = "Ragna"
+  }
+
+  def configureAppearance {
+
+    var meantimeAnimation = 0.001
 
     var ragnaCombos = sprite("ragna/combos.png")
     var ragnaCombosXML = xmlFromFile("img/ragna/combos.xml")
@@ -60,13 +68,9 @@ object Ragna extends CharacterAppearance {
     //    var ragnaEspecials = sprite("ragna/ragnaEspecials.png"))
     //    var ragnaEspecialsXML = xmlFromFile("img/ragna/ragnaEspecials.xml").getFile())
 
-    this.addMove(IDLE, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))
+    //  this.addMove(IDLE, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))
 
-    this.addMove(WALK, new FightMoves("wl", ragnaWalk, ragnaWalkXML, 0))
-    this.addMove(WALK_BACK, new FightMoves("wr", ragnaWalk, ragnaWalkXML, 0))
-    this.addMove(JUMP, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 2))
     //
-    this.selectedImage = sprite("ragna/ragnaSelected.png")
     //
     this.addMove(HIGH_KICK1, new FightMoves("rg201_", ragnaPatadas1, ragnaPatadas1XML, 10))
     this.addMove(HIGH_KICK2, new FightMoves("rg211_", ragnaPatadas2, ragnaPatadas2XML, 50))
@@ -80,7 +84,6 @@ object Ragna extends CharacterAppearance {
     this.addMove(LOW_PUNCH1, new FightMoves("rg230_", ragnaGolpe2, ragnaGolpe2XML, 10))
 
     this.addMove(COMBO1, new FightMoves("rg212_", ragnaCombos, ragnaCombosXML, 10))
-    this.addMove(KICKED, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 0.05))
 
     //FAKE    
     //  this.addMove(HIGH_KICK1, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))
@@ -100,17 +103,21 @@ object Ragna extends CharacterAppearance {
 
 object Litchi extends CharacterAppearance {
 
-  def configureAppearance {
-
+  def configureBaseAppearance() {
+    this.selectedImage = sprite("litchi/litchiSelected.png")
+    var litchiWait = sprite("litchi/litchiwait.png")
+    var litchiWaitXML = xmlFromFile("img/litchi/litchiwait.xml")
+    this.addMove(IDLE, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
     this.name = "Litchi"
+  }
+  override def selectedAnimation = getMove(IDLE).getAnimation(Orientation.LEFT)
+  
+  def configureAppearance {
 
     var meantimeAnimation = 0.001
 
     var litchiWalk = sprite("litchi/litchiwalk.png")
     var litchiWalkXML = xmlFromFile("img/litchi/litchiwalk.xml")
-
-    var litchiWait = sprite("litchi/litchiwait.png")
-    var litchiWaitXML = xmlFromFile("img/litchi/litchiwait.xml")
 
     var litchiGolpes = sprite("litchi/litchigolpes.png")
     var litchiGolpesXML = xmlFromFile("img/litchi/litchigolpes.xml")
@@ -122,7 +129,6 @@ object Litchi extends CharacterAppearance {
       var ragnaEspecialsXML = xmlFromFile("img/ragna/ragnaEspecials.xml").getFile())
   */
 
-    this.selectedImage = sprite("litchi/litchiSelected.png")
     //  this.addMove(IDLE, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))
     this.addMove(JUMP, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0, 0.05))
 
@@ -130,7 +136,6 @@ object Litchi extends CharacterAppearance {
     this.addMove(WALK_BACK, new FightMoves("lc031_", litchiWalk, litchiWalkXML, 0))
 
     //  this.selectedImage = sprite("litchi/litchiSelected.png")
-    this.addMove(IDLE, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
     //    this.addMove(JUMP, new FightMoves("lc000_", litchiWait, litchiWaitXML, 0, 0.05))
 
     this.addMove(WALK, new FightMoves("lc030_", litchiWalk, litchiWalkXML, 0))

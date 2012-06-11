@@ -11,7 +11,7 @@ import ar.edu.unq.tpi.CharacterAppearance
 import ar.edu.unq.tpi.CharacterFight
 import ar.edu.unq.tpi.Fight
 import ar.edu.unq.tpi.traits.RoundComponent
-import ar.edu.unq.tpi.StateRaund
+import ar.edu.unq.tpi.StateRound
 import ar.unq.tpi.components.ScrollingBackroundComponent
 import ar.unq.tpi.components.SpriteComponent
 import ar.unq.tpi.components.AnimateSprite
@@ -22,18 +22,18 @@ import ar.unq.tpi.components.Stats
 import traits.EventGameComponent
 import com.uqbar.vainilla.Game
 
-class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
+class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
 
   var finish = false
 
-  var character1 = new CharacterFight(new Player1(), new Character(character), this, 200, 800)
-  var character2 = new CharacterFight(new Player2(), new Character(Litchi), this, 1200, 700)
+  var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
+  var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
 
   var finishAnimation = new SpriteCenterComponent(winAnimate, game.getDisplayWidth(), game.getDisplayHeight(), 100)
-  var state: StateRaund = FirstRaund
+  var state: StateRound = FirstRound
   var countVictorysChF: Int = 0
   var countVictorysChS: Int = 0
   var backGround: ScrollingBackroundComponent[GameScene] = null
@@ -43,10 +43,9 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
   val ON_RIGTH_MAP_MOVE = new FunctionEvent(onRigthMapMove)
   val ON_DEATH_1 = new FunctionEvent(onDeath1)
   val ON_DEATH_2 = new FunctionEvent(onDeath2)
-  
 
-  def this(game: Fight, character: CharacterAppearance, arena: Selectable) {
-    this(game, character)
+  def this(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance, arena: Selectable) {
+    this(game, characterAppearance1, characterAppearance2)
 
     character1.oponent = character2
     character2.oponent = character1
@@ -66,7 +65,7 @@ class GamePlayScene(game: Fight, character: CharacterAppearance) extends GameSce
    hud.init()
  }
 
-  def startRound(state: StateRaund) {
+  def startRound(state: StateRound) {
     this.state = state
     character1.character.life = GameValues.PLAYER_LIFE
     character2.character.life = GameValues.PLAYER_LIFE

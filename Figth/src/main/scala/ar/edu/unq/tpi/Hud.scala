@@ -38,8 +38,8 @@ class Hud(scene: GamePlayScene) {
   }
 
   def indexStatusPointer: Int = scene.state match {
-    case FirstRaund => 0
-    case SecondRaund => 1
+    case FirstRound => 0
+    case SecondRound => 1
     case _ => -1
   }
 
