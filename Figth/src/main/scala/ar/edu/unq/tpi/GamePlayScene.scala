@@ -23,11 +23,11 @@ import traits.EventGameComponent
 import com.uqbar.vainilla.Game
 
 class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
-
+//class GamePlayScene(game: Fight, character1: CharacterFight, character2: CharacterFight) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
   var finish = false
 
-  var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
-  var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
+    var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
+    var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
@@ -37,15 +37,17 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
   var countVictorysChF: Int = 0
   var countVictorysChS: Int = 0
   var backGround: ScrollingBackroundComponent[GameScene] = null
-  var hud:Hud = _
-  
+  var hud: Hud = _
+
   val ON_LEFT_MAP_MOVE = new FunctionEvent(onLeftMapMove)
   val ON_RIGTH_MAP_MOVE = new FunctionEvent(onRigthMapMove)
   val ON_DEATH_1 = new FunctionEvent(onDeath1)
   val ON_DEATH_2 = new FunctionEvent(onDeath2)
 
-  def this(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance, arena: Selectable) {
-    this(game, characterAppearance1, characterAppearance2)
+   def this(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance, arena: Selectable) {
+       this(game, characterAppearance1, characterAppearance2)
+//  def this(game: Fight, char1: CharacterFight, char2: CharacterFight, arena: Selectable) {
+//    this(game, char1, char2)
 
     character1.oponent = character2
     character2.oponent = character1
@@ -58,12 +60,12 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     this.addComponents(backGround)
     this.addComponents(character1, character2)
   }
-  
- override def setGame(game:Game){
-   super.setGame(game)
-   hud = new Hud(this)
-   hud.init()
- }
+
+  override def setGame(game: Game) {
+    super.setGame(game)
+    hud = new Hud(this)
+    hud.init()
+  }
 
   def startRound(state: StateRound) {
     this.state = state
@@ -77,20 +79,19 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     character1.setY(800)
     character2.setX(1200)
     character2.setY(700)
-    
-    val roundComponent = new SpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(),getGame().getDisplayHeight(), 2)
+
+    val roundComponent = new SpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 2)
     roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new FunctionEvent(onStart))
-    
+
     this.addComponent(roundComponent)
-    
-  }
-  
-  def onStart(event:Event[RoundComponent[GamePlayScene, Sprite], Any]){
-	  this.removeComponent(event.target)
-	  configureListeners()
-    
+
   }
 
+  def onStart(event: Event[RoundComponent[GamePlayScene, Sprite], Any]) {
+    this.removeComponent(event.target)
+    configureListeners()
+
+  }
 
   def configureListeners() {
     character1.addEventListener(GameEvents.COLLIDE_WITH_BOUND_LEFT, ON_LEFT_MAP_MOVE)
@@ -143,14 +144,14 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
   }
 
   def onRigthMapMove(event: Event[CharacterFight, Orientation.Orientation]) {
-    if(backGround.sprite.avance()){
-    	event.target.oponent.move(-GameValues.DELTA_BACK_MOVE,0)
+    if (backGround.sprite.avance()) {
+      event.target.oponent.move(-GameValues.DELTA_BACK_MOVE, 0)
     }
   }
 
   def onLeftMapMove(event: Event[CharacterFight, Orientation.Orientation]) {
-    if(backGround.sprite.retroceder()){
-    	event.target.oponent.move(GameValues.DELTA_BACK_MOVE,0)
+    if (backGround.sprite.retroceder()) {
+      event.target.oponent.move(GameValues.DELTA_BACK_MOVE, 0)
     }
   }
 
@@ -159,6 +160,6 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
 
 }
 
-class SpriteCenterComponent(sprite:Sprite,override val width:Double, override val height:Double, override val meantime:Double ) extends SpriteComponent[GamePlayScene](sprite, 0,0) 
-		with CenterComponent[GamePlayScene, Sprite] with RoundComponent[GamePlayScene, Sprite]{}
+class SpriteCenterComponent(sprite: Sprite, override val width: Double, override val height: Double, override val meantime: Double) extends SpriteComponent[GamePlayScene](sprite, 0, 0)
+  with CenterComponent[GamePlayScene, Sprite] with RoundComponent[GamePlayScene, Sprite] {}
 

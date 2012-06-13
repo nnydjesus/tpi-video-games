@@ -32,5 +32,20 @@ class Matrix[T](var width:Int, var height:Int) {
     elems(i)(j) = t
   }
   
+   def includeKeys(x: Int, y: Int): Boolean = {
+    var include: Boolean = false
+    elems.keys.foreach(i => {
+      elems(i).keys.foreach(j => {
+        if (i == x && j == y) {
+          include = true
+        }
+      })
+    })
+    return include
+  }
+  
+  def isOverflow(x: Int, y: Int): Boolean = {
+    return ! includeKeys(x,y)
+    }
 
 }

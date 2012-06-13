@@ -9,5 +9,6 @@ abstract class Actor[SceneType <:GameScene, T<:EventGameComponent[T]](var defaul
   var isMoving = false;
   
   def changeMove(move:Movement)// = this.setAppearance(animations(state))
-
+  
+  // def changeCabezal()
 }

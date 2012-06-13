@@ -9,7 +9,8 @@ abstract class Player {
   var RIGHT: Key
   var UP: Key
   var DOWN: Key
-
+  var ENTER: Key
+  
   var K_HIGH_KICK1: Key
   var K_LOW_KICK1: Key
   var K_HIGH_KICK2: Key
@@ -40,6 +41,7 @@ abstract class Player {
 
   def update(deltaState: DeltaState): Boolean = {
     if (deltaState.isKeyPressed(this.UP)) {
+      //dispatchEvent(new Event(GameEvents.MOVE_CABEZAL_UP, this, this.orientation))
       character.changeMove(JUMP)
       return false;
     }
@@ -64,7 +66,8 @@ class Player1 extends Player {
   var RIGHT = Key.D
   var UP = Key.W
   var DOWN = Key.S
-
+  var ENTER = Key.O
+  
   var K_HIGH_KICK1 = Key.T
   var K_LOW_KICK1 = Key.Y
   var K_HIGH_KICK2 = Key.U
@@ -82,7 +85,8 @@ class Player2 extends Player {
   var RIGHT = Key.RIGHT
   var UP = Key.UP
   var DOWN = Key.DOWN
-
+  var ENTER = Key.ENTER
+  
   var K_HIGH_KICK1 = Key.NUMPAD9
   var K_LOW_KICK1 = Key.NUMPAD8
   var K_HIGH_KICK2 = Key.NUMPAD7
@@ -99,7 +103,7 @@ class PlayerCPU extends Player {
   var RIGHT = Key.RIGHT
   var UP = Key.UP
   var DOWN = Key.DOWN
-
+  var ENTER = Key.Q
   var K_HIGH_KICK1 = Key.NUMPAD9
   var K_LOW_KICK1 = Key.NUMPAD8
   var K_HIGH_KICK2 = Key.NUMPAD7

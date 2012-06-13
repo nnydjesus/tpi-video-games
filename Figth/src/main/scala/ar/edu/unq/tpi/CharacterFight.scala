@@ -8,7 +8,7 @@ import ar.edu.unq.tpi.traits.RoundComponent
 import ar.unq.tpi.components.SpriteComponent
 import ar.unq.tpi.components.GenericGameEvents
 
-class CharacterFight(player: Player, var character: Character, var scene: GamePlayScene, x: Int, staticY: Int) extends Actor[GamePlayScene, CharacterFight](null, x, staticY) {
+class CharacterFight(var player: Player, var character: Character, var scene: GamePlayScene, x: Int, staticY: Int) extends Actor[GamePlayScene, CharacterFight](null, x, staticY) {
 
   player.character = this
 
@@ -54,7 +54,7 @@ class CharacterFight(player: Player, var character: Character, var scene: GamePl
     isMoving = true
 
     if (this.character.death) {
-      dispatchEvent(new Event(GameEvents.DEATH, this))
+      dispatchEvent(new Event(GameEvents.DEATH, this,this.orientation))
     }
   }
 
