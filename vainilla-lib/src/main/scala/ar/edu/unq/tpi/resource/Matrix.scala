@@ -19,7 +19,6 @@ class Matrix[T](var width:Int, var height:Int) {
     }
   }
   
-  println("matrix" + elems )
   val rows = elems.size        //Returns # of rows
 
   def apply[B >: T](i:Int, j:Int) = elems(i)(j)
