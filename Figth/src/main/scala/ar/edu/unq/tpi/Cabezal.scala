@@ -11,38 +11,37 @@ class Cabezal extends GameComponent[SelectCharacterScene, Sprite] {
 
   var player: Player = null
   var matrixBase: MatrixSelectedCharacter = null
-  var pox : Int  = 0
-  var poy : Int  = 0
-  
-  def this(playe: Player, border: Sprite, x: Int, y: Int) {
+  var pox: Int = 0
+  var poy: Int = 0
+
+  def this(player: Player, border: Sprite, posx: Int, posy: Int, initX: Double, initY: Double) {
     this()
-    
-    pox = x
-    poy = y
-    player = playe
-    matrixBase = getScene().matrixCharacter
+
+    pox = posx
+    poy = posy
+    this.player = player
     setAppearance(border)
-    setX(x * GameValues.WIDTH_SELECTED_CHARACTER + GameValues.COORD_X_MATRIX)
-    setY(y * GameValues.HEIGHT_SELECTED_CHARACTER + GameValues.COORD_Y_MATRIX)
+    setX((pox * GameValues.WIDTH_SELECTED_CHARACTER) + initX)
+    setY((poy * GameValues.HEIGHT_SELECTED_CHARACTER) + initY)
   }
 
   def moveUp() {
-    if (!matrixBase.isOverflow(pox,poy - 1)) {
-      setY(getY() -GameValues.HEIGHT_SELECTED_CHARACTER)
-      poy = poy -1
+    if (!matrixBase.isOverflow(pox, poy - 1)) {
+      setY(getY() - GameValues.HEIGHT_SELECTED_CHARACTER)
+      poy = poy - 1
     }
   }
 
   def moveDown() {
-    if (!matrixBase.isOverflow(pox,poy + 1)) {
+    if (!matrixBase.isOverflow(pox, poy + 1)) {
       setY(getY() + GameValues.HEIGHT_SELECTED_CHARACTER)
-      poy = poy +1
+      poy = poy + 1
     }
   }
   def moveLeft() {
     if (!matrixBase.isOverflow(pox - 1, poy)) {
       setX(getX() - GameValues.WIDTH_SELECTED_CHARACTER)
-    pox = pox -1
+      pox = pox - 1
     }
   }
   def moveRight() {
@@ -66,6 +65,7 @@ class Cabezal extends GameComponent[SelectCharacterScene, Sprite] {
 
   override def setScene(scene: SelectCharacterScene) {
     super.setScene(scene)
+    this.matrixBase = scene.matrixCharacter
     this.configurationListener()
   }
 }

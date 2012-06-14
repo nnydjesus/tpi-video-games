@@ -7,6 +7,9 @@ import ar.edu.unq.tpi.traits.FunctionEvent
 import ar.edu.unq.tpi.traits.RoundComponent
 import ar.unq.tpi.components.SpriteComponent
 import ar.unq.tpi.components.GenericGameEvents
+import ar.unq.tpi.components.AnimationComponent
+import ar.edu.unq.tpi.resource.TraitResources
+import ar.edu.unq.tpi.traits.EventGameComponent
 
 class CharacterFight(var player: Player, var character: Character, var scene: GamePlayScene, x: Int, staticY: Int) extends Actor[GamePlayScene, CharacterFight](null, x, staticY) {
 
@@ -76,9 +79,10 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
       
       var spriteX= this.getX() + positionOnCollition._1 - (GameImage.COLLITION.getWidth()/2)
       var spriteY= this.getY() + positionOnCollition._2 - (GameImage.COLLITION.getHeight()/2)
-      var sprite = new SpriteComponent[GamePlayScene](GameImage.COLLITION, spriteX, spriteY) with RoundComponent[GamePlayScene, Sprite]{override val meantime =1D}
-      sprite.addEventListener(GenericGameEvents.FINISH_ANIMATION, new FunctionEvent((e:Event[RoundComponent[GamePlayScene, Sprite], Any]) => sprite.destroy()))
-      scene.addComponent(sprite)
+      var animation:Animation = new Animation(0.01, 0 ,sprite("collition/vrrgef450atk_00.png"),sprite("collition/vrrgef450atk_01.png"), sprite("collition/vrrgef450atk_02.png"),sprite("collition/vrrgef450atk_03.png"), sprite("collition/vrrgef450atk_04.png"), sprite("collition/vrrgef450atk_05.png"), sprite("collition/vrrgef450atk_06.png") )
+      var effect = new EffectToCollition(animation, spriteX, spriteY)
+      effect.addEventListener(GenericGameEvents.FINISH_ANIMATION, new FunctionEvent((e:Event[EffectToCollition, Any]) => effect.destroy()))
+      scene.addComponent(effect)
       
     }
   }

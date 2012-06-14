@@ -3,22 +3,27 @@ import com.uqbar.vainilla.events.constants.Key
 import com.uqbar.vainilla.DeltaState
 import scala.collection.mutable.Buffer
 import ar.edu.unq.tpi.traits.FunctionSceneListener
+import ar.edu.unq.tpi.resource.TraitResources
 
-abstract class Player {
-  var LEFT: Key
-  var RIGHT: Key
-  var UP: Key
-  var DOWN: Key
-  var ENTER: Key
+abstract class Player(tag:String) extends TraitResources{
   
-  var K_HIGH_KICK1: Key
-  var K_LOW_KICK1: Key
-  var K_HIGH_KICK2: Key
-  var K_LOW_KICK2: Key
-  var K_HIGH_PUCH1: Key
-  var K_LOW_PUNCH1: Key
-  var K_HIGH_PUCH2: Key
-  var K_LOW_PUNCH2: Key
+  val controls = xmlFromFile("controls/controllers.xml")
+  var thisControls = controls\ tag
+  
+  var LEFT = Key.fromCode((thisControls\"LEFT").text)
+  var RIGHT = Key.fromCode((thisControls\"RIGHT").text)
+  var UP = Key.fromCode((thisControls\"UP").text)
+  var DOWN = Key.fromCode((thisControls\"DOWN").text)
+  var ENTER = Key.fromCode((thisControls\"ENTER").text)
+  
+  var K_HIGH_KICK1 = Key.fromCode((thisControls\"K_HIGH_KICK1").text)
+  var K_LOW_KICK1 = Key.fromCode((thisControls\"K_LOW_KICK1").text)
+  var K_HIGH_KICK2 = Key.fromCode((thisControls\"K_HIGH_KICK2").text)
+  var K_LOW_KICK2 = Key.fromCode((thisControls\"K_LOW_KICK2").text)
+  var K_HIGH_PUCH1 = Key.fromCode((thisControls\"K_HIGH_PUCH1").text)
+  var K_LOW_PUNCH1 = Key.fromCode((thisControls\"K_LOW_PUNCH1").text)
+  var K_HIGH_PUCH2 = Key.fromCode((thisControls\"K_HIGH_PUCH2").text)
+  var K_LOW_PUNCH2 = Key.fromCode((thisControls\"K_LOW_PUNCH2").text)
 
   //  var COMBO1 = Array(Key.T)
   //  var COMBO2 = Array(Key.T)
@@ -60,58 +65,11 @@ abstract class Player {
 
   }
 }
-class Player1 extends Player {
 
-  var LEFT = Key.A
-  var RIGHT = Key.D
-  var UP = Key.W
-  var DOWN = Key.S
-  var ENTER = Key.O
-  
-  var K_HIGH_KICK1 = Key.T
-  var K_LOW_KICK1 = Key.Y
-  var K_HIGH_KICK2 = Key.U
-  var K_LOW_KICK2 = Key.I
-  var K_HIGH_PUCH1 = Key.G
-  var K_LOW_PUNCH1 = Key.H
-  var K_HIGH_PUCH2 = Key.J
-  var K_LOW_PUNCH2 = Key.K
+case class Player1 extends Player("Player1") {}
+case class Player2 extends Player("Player2"){}
 
-}
-
-class Player2 extends Player {
-
-  var LEFT = Key.LEFT
-  var RIGHT = Key.RIGHT
-  var UP = Key.UP
-  var DOWN = Key.DOWN
-  var ENTER = Key.ENTER
-  
-  var K_HIGH_KICK1 = Key.NUMPAD9
-  var K_LOW_KICK1 = Key.NUMPAD8
-  var K_HIGH_KICK2 = Key.NUMPAD7
-  var K_LOW_KICK2 = Key.NUMPAD6
-  var K_HIGH_PUCH1 = Key.NUMPAD5
-  var K_LOW_PUNCH1 = Key.NUMPAD4
-  var K_HIGH_PUCH2 = Key.NUMPAD2
-  var K_LOW_PUNCH2 = Key.NUMPAD1
-
-}
-
-class PlayerCPU extends Player {
-  var LEFT = Key.LEFT
-  var RIGHT = Key.RIGHT
-  var UP = Key.UP
-  var DOWN = Key.DOWN
-  var ENTER = Key.Q
-  var K_HIGH_KICK1 = Key.NUMPAD9
-  var K_LOW_KICK1 = Key.NUMPAD8
-  var K_HIGH_KICK2 = Key.NUMPAD7
-  var K_LOW_KICK2 = Key.NUMPAD6
-  var K_HIGH_PUCH1 = Key.NUMPAD5
-  var K_LOW_PUNCH1 = Key.NUMPAD4
-  var K_HIGH_PUCH2 = Key.NUMPAD2
-  var K_LOW_PUNCH2 = Key.NUMPAD1
+class PlayerCPU extends Player("Player2") {
 
   override def update(deltaState: DeltaState): Boolean = {
     if ((Math.random * 100) >= 50) {

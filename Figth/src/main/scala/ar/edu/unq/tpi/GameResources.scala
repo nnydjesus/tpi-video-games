@@ -6,14 +6,15 @@ object GameEvents {
   val COLLIDE_WITH_BOUND_LEFT = "COLLIDE_WITH_BOUND_LEFT"
   val COLLIDE_WITH_BOUND_RIGTH = "COLLIDE_WITH_BOUND_RIGTH"
   val DEATH = "DEATH"
-  val FINISH_FIGTH= "FINISH_FIGTH"
-   val FINISH_ANIMATION = "FINISH_ANIMATION" 
+  val FINISH_FIGTH = "FINISH_FIGTH"
+  val FINISH_ANIMATION = "FINISH_ANIMATION"
+  val FINISH_TIME = "FINISH_TIME"
+  val LOAD_RESOURCE = "LOAD_RESOURCE"
 
 }
 
-
 object GameValues {
-  
+
   val PLAYER_LIFE = 100D
   val VICTORYS_TO_WIN = 2
   val DELTA_BACK_MOVE = 15
@@ -22,20 +23,18 @@ object GameValues {
   val PADDING_CHARACTER = 10
   val WIDTH_MATRIX = 6
   val HEIGHT_MATRIX = 6
-  val COORD_X_MATRIX = 1024 / 2 - 500
-  val COORD_Y_MATRIX = 50
 }
 
 object Fonts extends TraitResources {
   val GODOFWAR = getFont("GODOFWAR.TTF")
 }
 
-object GameImage extends TraitResources{
+object GameImage extends TraitResources {
   lazy val LIFE_BAR = sprite("hud/cp15_lifegage_Y.png")
   lazy val BACKGROUND_BAR = sprite("hud/cp15_main03.png")
   lazy val HUD_BAR_1 = sprite("hud/cp15_ee.png")
   lazy val HUD_BAR_2 = sprite("hud/cp15_dd.png")
-  lazy val WIN_ROUND= sprite("hud/win.png")
+  lazy val WIN_ROUND = sprite("hud/win.png")
   lazy val LOSE_ROUND = sprite("hud/lose.png")
   lazy val NONE_ROUND = sprite("hud/none.png")
   lazy val BACKTIMER = sprite("hud/backTimer.png")
@@ -47,5 +46,5 @@ object GameImage extends TraitResources{
   lazy val ROUND_1 = getImage("round1.png")
   lazy val ROUND_2 = getImage("round2.png")
   lazy val ROUND_FINISH = getImage("roundfinal.png")
-  lazy val COLLITION = sprite("vrrgef450atk_01.png")
+  lazy val COLLITION = sprite("collition/vrrgef450atk_01.png")
 }

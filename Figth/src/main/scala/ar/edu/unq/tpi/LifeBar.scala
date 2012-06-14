@@ -18,9 +18,9 @@ class LifeBar(barSprite: Sprite, backgroundbar: Sprite, bar1: Sprite, bar2: Spri
     var graphics = image.createGraphics()
     bar1.render(this, graphics)
     if(invertir){
-      selectedImage.renderAt(this.getX().toInt + (selectedImage.getWidth().toInt/2), this.getY().toInt, graphics)
+      selectedImage.renderAt(this.getX().toInt + (selectedImage.getWidth().toInt/2) + 20, this.getY().toInt+40, graphics)
     }else{
-      selectedImage.renderAt(this.getX().toInt + bar1.getWidth().toInt - selectedImage.getWidth().toInt, this.getY().toInt, graphics)
+      selectedImage.renderAt(this.getX().toInt + bar1.getWidth().toInt - selectedImage.getWidth().toInt -20, this.getY().toInt+40, graphics)
     }
     bar2.render(this, graphics)
     backgroundbar.render(this, graphics)
@@ -43,7 +43,7 @@ class LifeBar(barSprite: Sprite, backgroundbar: Sprite, bar1: Sprite, bar2: Spri
     if (life > 0) {
       if (invertir) {
         var move = ((barSprite.getWidth() * (life+deltaLife)) / 100).toInt -188
-        this.setAppearance(barSprite.crop(barSprite.getWidth().toInt - move, 0, move, barSprite.getHeight().toInt))
+        this.setAppearance(barSprite.crop(Math.min(barSprite.getWidth().toInt - move, barSprite.getWidth().toInt-1), 0, Math.max(move, 1), barSprite.getHeight().toInt))
       } else {
         this.setAppearance(barSprite.crop(0, 0, (((barSprite.getWidth() -188) * (life+deltaLife)) / 100).toInt, barSprite.getHeight().toInt))
       }

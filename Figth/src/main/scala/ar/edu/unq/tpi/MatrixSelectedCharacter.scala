@@ -32,14 +32,14 @@ class MatrixSelectedCharacter(c: Int, f: Int, scene: SelectCharacterScene) exten
     })
     new Sprite(imageBigCharacter)
   }
-  def createComponents() {
-    var mapComponents = Map[(Int, Int), SelectableCharacter]()
-    this.elems.keys.foreach(i => {
-      this.elems(i).keys.foreach(j => {
-        mapComponents((i * GameValues.WIDTH_SELECTED_CHARACTER + GameValues.COORD_X_MATRIX, j * GameValues.HEIGHT_SELECTED_CHARACTER + GameValues.COORD_Y_MATRIX)) = this(i, j)
-      })
-    })
-  }
+//  def createComponents() {
+//    var mapComponents = Map[(Int, Int), SelectableCharacter]()
+//    this.elems.keys.foreach(i => {
+//      this.elems(i).keys.foreach(j => {
+//        mapComponents((i * GameValues.WIDTH_SELECTED_CHARACTER + GameValues.COORD_X_MATRIX, j * GameValues.HEIGHT_SELECTED_CHARACTER + GameValues.COORD_Y_MATRIX)) = this(i, j)
+//      })
+//    })
+//  }
 
   def nextCharacterSelected() {
     if (pi < width) {

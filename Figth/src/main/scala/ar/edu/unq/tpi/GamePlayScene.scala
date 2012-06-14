@@ -6,12 +6,7 @@ import ar.edu.unq.tpi.traits.EventGameComponent
 import ar.edu.unq.tpi.traits.Event
 import ar.edu.unq.tpi.traits.EventGameScene
 import ar.edu.unq.tpi.traits.FunctionEvent
-import ar.edu.unq.tpi.BoundsScene
-import ar.edu.unq.tpi.CharacterAppearance
-import ar.edu.unq.tpi.CharacterFight
-import ar.edu.unq.tpi.Fight
 import ar.edu.unq.tpi.traits.RoundComponent
-import ar.edu.unq.tpi.StateRound
 import ar.unq.tpi.components.ScrollingBackroundComponent
 import ar.unq.tpi.components.SpriteComponent
 import ar.unq.tpi.components.AnimateSprite
@@ -23,11 +18,10 @@ import traits.EventGameComponent
 import com.uqbar.vainilla.Game
 
 class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
-//class GamePlayScene(game: Fight, character1: CharacterFight, character2: CharacterFight) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
   var finish = false
 
-    var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
-    var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
+  var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
+  var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
@@ -44,10 +38,8 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
   val ON_DEATH_1 = new FunctionEvent(onDeath1)
   val ON_DEATH_2 = new FunctionEvent(onDeath2)
 
-   def this(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance, arena: Selectable) {
-       this(game, characterAppearance1, characterAppearance2)
-//  def this(game: Fight, char1: CharacterFight, char2: CharacterFight, arena: Selectable) {
-//    this(game, char1, char2)
+  def this(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance, arena: Selectable) {
+    this(game, characterAppearance1, characterAppearance2)
 
     character1.oponent = character2
     character2.oponent = character1
@@ -84,12 +76,12 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new FunctionEvent(onStart))
 
     this.addComponent(roundComponent)
-
   }
 
   def onStart(event: Event[RoundComponent[GamePlayScene, Sprite], Any]) {
     this.removeComponent(event.target)
     configureListeners()
+    hud.start()
 
   }
 
@@ -113,16 +105,21 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     character2.removeEventListener(GameEvents.DEATH, ON_DEATH_2)
   }
 
-  def onDeath1(event: Event[CharacterFight, Any]) {
+  def onDeath1(event: Event[CharacterFight, Any] = null) {
     this.countVictorysChF += 1
     onDeath(loseAnimate)
     hud.addvictoy2()
   }
 
-  def onDeath2(event: Event[CharacterFight, Any]) {
+  def onDeath2(event: Event[CharacterFight, Any] = null) {
     this.countVictorysChS += 1
     onDeath(winAnimate)
     hud.addvictoy1()
+  }
+
+  def empate() {
+    onDeath(loseAnimate)
+    hud.empate()
   }
 
   def onDeath(finishAnimationAppearance: AnimateSprite) {
@@ -141,6 +138,15 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
 
   def finishFigth() {
     dispatchEvent(new Event(GameEvents.FINISH_FIGTH, this))
+  }
+
+  def timeOut() {
+    character1.character.life.compareTo(character2.character.life) match {
+      case 1 => onDeath2()
+      case -1 => onDeath1()
+      case 0 => { empate() }
+
+    }
   }
 
   def onRigthMapMove(event: Event[CharacterFight, Orientation.Orientation]) {
