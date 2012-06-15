@@ -6,66 +6,88 @@ import ar.unq.tpi.components.SelectScene
 import com.uqbar.vainilla.DeltaState
 import com.uqbar.vainilla.events.constants.Key
 import ar.edu.unq.tpi.traits.FunctionSceneListener
+import ar.unq.tpi.components.SpriteComponent
+import ar.edu.unq.tpi.traits.EventGameComponent
+import ar.edu.unq.tpi.traits.Event
 
-class Cabezal extends GameComponent[SelectCharacterScene, Sprite] {
+class Cabezal(sprite: Sprite) extends SpriteComponent[SelectCharacterScene](sprite, 0, 0) with EventGameComponent[Cabezal] {
+
+  val MOVE_TO_UP = new FunctionSceneListener((d) => this.moveUp())
+  val MOVE_TO_DOWN = new FunctionSceneListener((d) => this.moveDown())
+  val MOVE_TO_LEFT = new FunctionSceneListener((d) => this.moveLeft())
+  val MOVE_TO_RIGHT = new FunctionSceneListener((d) => this.moveRight())
+  val ACCEPT_SELECT_CHARACTER = new FunctionSceneListener((d) => this.accept())
 
   var player: Player = null
   var matrixBase: MatrixSelectedCharacter = null
-  var pox: Int = 0
-  var poy: Int = 0
+  var positionx: Int = 0
+  var positiony: Int = 0
 
   def this(player: Player, border: Sprite, posx: Int, posy: Int, initX: Double, initY: Double) {
-    this()
+    this(border)
 
-    pox = posx
-    poy = posy
+    positionx = posx
+    positiony = posy
     this.player = player
-    setAppearance(border)
-    setX((pox * GameValues.WIDTH_SELECTED_CHARACTER) + initX)
-    setY((poy * GameValues.HEIGHT_SELECTED_CHARACTER) + initY)
+    setX((positionx * GameValues.WIDTH_SELECTED_CHARACTER) + initX)
+    setY((positiony * GameValues.HEIGHT_SELECTED_CHARACTER) + initY)
   }
 
   def moveUp() {
-    if (!matrixBase.isOverflow(pox, poy - 1)) {
+    if (!matrixBase.isOverflow(positionx, positiony - 1)) {
       setY(getY() - GameValues.HEIGHT_SELECTED_CHARACTER)
-      poy = poy - 1
+      positiony = positiony - 1
+      fireOnMove()
     }
   }
 
   def moveDown() {
-    if (!matrixBase.isOverflow(pox, poy + 1)) {
+    if (!matrixBase.isOverflow(positionx, positiony + 1)) {
       setY(getY() + GameValues.HEIGHT_SELECTED_CHARACTER)
-      poy = poy + 1
+      positiony = positiony + 1
+      fireOnMove()
     }
   }
   def moveLeft() {
-    if (!matrixBase.isOverflow(pox - 1, poy)) {
+    if (!matrixBase.isOverflow(positionx - 1, positiony)) {
       setX(getX() - GameValues.WIDTH_SELECTED_CHARACTER)
-      pox = pox - 1
+      positionx = positionx - 1
+      fireOnMove()
     }
   }
   def moveRight() {
-    if (!matrixBase.isOverflow(pox + 1, poy)) {
+    if (!matrixBase.isOverflow(positionx + 1, positiony)) {
       setX(getX() + GameValues.WIDTH_SELECTED_CHARACTER)
-      pox = pox + 1
+      positionx = positionx + 1
+      fireOnMove()
     }
   }
   def accept() {
+    var selectCharacter: SelectableCharacter = matrixBase(positionx, positiony)
+    removeListener()
+  }
 
+  def fireOnMove() {
+    dispatchEvent(new Event(GameEvents.CABEZAL_MOVIDO, this, matrixBase(positionx, positiony)))
+  }
+
+  def removeListener() {
+    this.getScene().removeKeyPressetListener(this, player.UP, MOVE_TO_UP)
   }
 
   def configurationListener() {
 
-    this.getScene().addKeyPressetListener(this, player.ENTER, new FunctionSceneListener((d) => this.accept()))
-    this.getScene().addKeyPressetListener(this, player.UP, new FunctionSceneListener((d) => this.moveUp()))
-    this.getScene().addKeyPressetListener(this, player.DOWN, new FunctionSceneListener((d) => this.moveDown()))
-    this.getScene().addKeyPressetListener(this, player.LEFT, new FunctionSceneListener((d) => this.moveLeft()))
-    this.getScene().addKeyPressetListener(this, player.RIGHT, new FunctionSceneListener((d) => this.moveRight()))
+    this.getScene().addKeyPressetListener(this, player.UP, MOVE_TO_UP)
+    this.getScene().addKeyPressetListener(this, player.DOWN, MOVE_TO_DOWN)
+    this.getScene().addKeyPressetListener(this, player.LEFT, MOVE_TO_LEFT)
+    this.getScene().addKeyPressetListener(this, player.RIGHT, MOVE_TO_RIGHT)
+    this.getScene().addKeyPressetListener(this, player.ENTER, ACCEPT_SELECT_CHARACTER)
   }
 
   override def setScene(scene: SelectCharacterScene) {
     super.setScene(scene)
     this.matrixBase = scene.matrixCharacter
     this.configurationListener()
+    fireOnMove()
   }
 }

@@ -23,19 +23,10 @@ import ar.edu.unq.tpi.traits.Event
 import scala.collection.mutable.Buffer
 import java.awt.Graphics2D
 import ar.edu.unq.tpi.traits.FunctionSceneListener
+import scala.collection.JavaConversions._
+import scala.util.Random
 
-class InitialScene(game: Fight) extends GameScene() with TraitResources {
-
-  this.addComponent(new GameComponent[GameScene, Appearance](sprite("fondo1.png").scale(1, 1.3), 0, 0) {
-    override def update(delta: DeltaState) {
-      if (delta.isKeyBeingHold(Key.ENTER)) {
-        //        game.playGame()
-      }
-    }
-  })
-}
-
-class LoadingScene(characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene() with TraitResources with EventGameComponent[LoadingScene]{
+class LoadingScene(characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene() with TraitResources with EventGameComponent[LoadingScene] {
 
   override def setGame(game: Game) {
     super.setGame(game)
@@ -94,58 +85,75 @@ class SelectArenaScene(game: Fight, character: CharacterAppearance) extends Sele
 
 class SelectCharacterScene(game: Fight) extends SelectScene() {
 
-	  var player1 = new Player1()
-	  var player2 = new Player2()
-	  
+  var player1: Player = null
+  var player2: Player = null
+  var start = GameImage.BUTTON_START
+  var cursorFirstPlayer: Cabezal = null
+  var cursorSecondPlayer: Cabezal = null
+  var backgrondAnimation: Animation = null
+  var matrixComponent: SpriteComponent[SelectCharacterScene] = null
+  var characters: Buffer[CharacterAppearance] = Buffer[CharacterAppearance]()
+  var matrixCharacter: MatrixSelectedCharacter = new MatrixSelectedCharacter(GameValues.WIDTH_MATRIX, GameValues.HEIGHT_MATRIX, this)
+  var animationSelectedFirstCharacter = new AnimationComponent(new Animation(0, 0), -150, 200)
+  var animationSelectedSecondCharacter = new AnimationComponent(new Animation(0, 0), 700, 200)
 
-	  var dimension: Dimension = game.getDisplaySize()
-	  var character: Buffer[CharacterAppearance] = Buffer[CharacterAppearance]()
-	  this.character.append(Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna,
-	    Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Ragna, Litchi, Litchi, Litchi, Litchi, Ragna, Ragna, Ragna, Ragna, Ragna)
-	  var matrixCharacter = new MatrixSelectedCharacter(GameValues.WIDTH_MATRIX, GameValues.HEIGHT_MATRIX, this)
+  //  var 
+  //var  aca voy a poner una variable para poder hacer lo de la seleccion
+  
+  init()
 
-	  var characterFirstSelected: SelectableCharacter = new SelectableCharacter(Ragna)
-	  var characterSecondSelected: SelectableCharacter = new SelectableCharacter(Litchi)
-	  this.matrixCharacter.loadSelectedCharacter(this.character)
-
-	  var imageBigAllCharacter: Sprite = this.matrixCharacter.paintSelectedCharacter()
-	  var animationSelectedFirstCharacter = new GameComponent[GameScene, Animation](characterFirstSelected.character.selectedAnimation, -150, 200)
-	  var animationSelectedSecondCharacter = new GameComponent[GameScene, Animation](characterSecondSelected.character.selectedAnimation, 700, 200)
-	  var matrixComponent = new SpriteComponent(imageBigAllCharacter, (game.getDisplayWidth()/2)- ((GameValues.WIDTH_MATRIX * GameValues.WIDTH_SELECTED_CHARACTER)/2), (game.getDisplayHeight()/2)- ((GameValues.HEIGHT_MATRIX* GameValues.HEIGHT_SELECTED_CHARACTER)/2))
-
-	  var cursorFirstPlayer = new Cabezal(player1, sprite("cabezal.png"), 1, 2, matrixComponent.getX(), matrixComponent.getY())
-	  var cursorSecondPlayer = new Cabezal(player2, sprite("cabezal.png"), 1, 3, matrixComponent.getX(), matrixComponent.getY())
-	  
-	  var backgrondImage1 = ScaleSpriteComponent.scale(sprite("00002.png"), game.getDisplayWidth(), game.getDisplayHeight())
-	  var backgrondImage2 = ScaleSpriteComponent.scale(sprite("00003.png"), game.getDisplayWidth(), game.getDisplayHeight())
-	  var backgrondImage3 = ScaleSpriteComponent.scale(sprite("00004.png"), game.getDisplayWidth(), game.getDisplayHeight())
-	  var backgrondAnimation = new Animation(1, 1, backgrondImage1, backgrondImage2, backgrondImage3);
-	  this.addComponent(new AnimationComponent(backgrondAnimation, 0, 0))
-	  this.addComponent(matrixComponent)
-	  this.addComponent(cursorFirstPlayer)
-	  this.addComponent(cursorSecondPlayer)
-	  //this.addComponent(new SelectComponent(this, characterSecondSelected,GameValues.COORD_X_MATRIX + GameValues.WIDTH_SELECTED_CHARACTER + GameValues.PADDING_CHARACTER, GameValues.COORD_Y_MATRIX, GameValues.WIDTH_SELECTED_CHARACTER, GameValues.HEIGHT_SELECTED_CHARACTER))
-	  this.addComponent(animationSelectedFirstCharacter)
-	  this.addComponent(animationSelectedSecondCharacter)
-	  var start = GameImage.BUTTON_START
-
-	  this.addComponent(new ButtonComponent(start, start, game.getDisplayWidth() - (start.getWidth() + 100), game.getDisplayHeight() - (start.getHeight() + 100), onStart))
-
-	  this.addComponent(new MouseComponent(GameImage.SWORD, 0, 0))
-	  //this.addComponent(new MouseComponent(GameImage.SWORD, 200,200))
-
-	  override def selectItem(selectable: Selectable) {
-	    selectable match {
-	      case selectedCharacter: SelectableCharacter => {
-	        characterFirstSelected = selectedCharacter
-	        animationSelectedFirstCharacter.setAppearance(characterFirstSelected.character.selectedAnimation)
-
-	      }
-	    }
-
-	  }
-
-  def onStart(delta: DeltaState) {
-    game.selectArena(characterFirstSelected)
+  def init() {
+    player1 = new Player1()
+    player2 = new Player2()
+    createAnimationBackground()
+    createAnimationSelectedCharacters()
+    createMatrixCharacter()
+    createCabezales()
   }
+
+  def createMatrixCharacter() {
+    createListCharacter(GameValues.WIDTH_MATRIX * GameValues.HEIGHT_MATRIX)
+    matrixCharacter.loadSelectedCharacter(this.characters)
+    matrixCharacter.paintSelectedCharacter()
+    matrixComponent = new SpriteComponent(matrixCharacter.paintSelectedCharacter(), (game.getDisplayWidth() / 2) - ((GameValues.WIDTH_MATRIX * GameValues.WIDTH_SELECTED_CHARACTER) / 2), (game.getDisplayHeight() / 2) - ((GameValues.HEIGHT_MATRIX * GameValues.HEIGHT_SELECTED_CHARACTER) / 2))
+    this.addComponent(matrixComponent)
+  }
+
+  def createListCharacter(size: Int) {
+    var toSelectCharacter: Buffer[CharacterAppearance] = Buffer[CharacterAppearance]()
+    toSelectCharacter.append(Ragna, Litchi)
+    for (i <- 0 until size ) {
+      characters.append(toSelectCharacter(Random.nextInt(2)))
+    }
+  }
+
+  def createCabezales() {
+    var cursorFirstPlayer = new Cabezal(player1, sprite("cabezal.png"), 1, 2, matrixComponent.getX(), matrixComponent.getY())
+    var cursorSecondPlayer = new Cabezal(player2, sprite("cabezal.png"), 1, 3, matrixComponent.getX(), matrixComponent.getY())
+    cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
+      animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation)
+    })
+    cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
+      animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation)
+    })
+    this.addComponent(cursorFirstPlayer)
+    this.addComponent(cursorSecondPlayer)
+  }
+
+  def createAnimationBackground() {
+//    var background = new Array[Sprite](11)
+//    for (i <- 1 until 12) {
+//      background(i - 1) = ScaleSpriteComponent.scale(sprite("background/" + "00" + i + ".png"), game.getDisplayWidth(), game.getDisplayHeight())
+//    }
+//    backgrondAnimation = new Animation(1 / 5D, background)
+    this.addComponent(new SpriteComponent(sprite("background/0010.png"), 0, 0))
+  }
+  def createAnimationSelectedCharacters() {
+    this.addComponent(animationSelectedFirstCharacter)
+    this.addComponent(animationSelectedSecondCharacter)
+  }
+
+  //  def onStart(delta: DeltaState) {
+  //    game.selectArena(characterFirstSelected)
+  //  }
 }
