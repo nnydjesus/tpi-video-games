@@ -43,12 +43,12 @@ class Fight extends Game with TraitResources {
     new ConfigureButtonsDialog(Player1)
   }
 
-  def selectArena(character: SelectableCharacter) {
-    setCurrentScene(new SelectArenaScene(this, character.character))
+  def selectArena(character1: SelectableCharacter, character2 : SelectableCharacter) {
+    setCurrentScene(new SelectArenaScene(this, character1.character, character2.character))
   }
 
-  def playGame(character: CharacterAppearance, arena: Selectable) {
-    var loading = new LoadingScene(character, Litchi)
+  def playGame(character: CharacterAppearance,character2 : CharacterAppearance, arena: Selectable) {
+    var loading = new LoadingScene(character, character2)
     setCurrentScene(loading)
 
     loading.addEventListener(GameEvents.LOAD_RESOURCE, resourceLoaded(character, Litchi, arena))
