@@ -7,7 +7,7 @@ import com.uqbar.vainilla.GameScene
 
 import ar.edu.unq.tpi.traits.EventGameScene
 
-class BackroundComponent[SceneType <: GameScene](sprite: Sprite, width: Double, heigth: Double, x: Double, y: Double) extends SpriteComponent[SceneType](sprite.scale(width / sprite.getWidth(), heigth / sprite.getHeight()), x, y) {
+class BackroundComponent[SceneType <: GameScene](sprite: Sprite, width: Double, heigth: Double, x: Double=0, y: Double=0) extends SpriteComponent[SceneType](sprite.scale(width / sprite.getWidth(), heigth / sprite.getHeight()), x, y) {
   this.setZ(-10)
 }
 

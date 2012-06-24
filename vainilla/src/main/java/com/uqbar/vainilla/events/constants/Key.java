@@ -37,7 +37,7 @@ public enum Key {
 
 	private int keyCode;
 
-	private final String code;
+	private String code;
 
 	// ****************************************************************
 	// ** STATICS
@@ -74,5 +74,9 @@ public enum Key {
 
 	public String getCode() {
 		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 }

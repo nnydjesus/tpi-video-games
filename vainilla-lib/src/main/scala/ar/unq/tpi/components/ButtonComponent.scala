@@ -25,16 +25,17 @@ class ButtonComponent[SceneType <: EventGameScene](sprite: Sprite, over: Sprite,
 
   def onClick(deltaState: DeltaState) {
     if (isClickMe(deltaState.getCurrentMousePosition())) {
-    	listener(deltaState)
+    	click(deltaState)
     }
 
   }
+  def click(deltaState: DeltaState) = listener(deltaState) 
 
 }
 
 
 
-class ButtonTextComponent[SceneType <: EventGameScene](sprite: Sprite, over: Sprite, label: Label, x: Double, y: Double, listener:(DeltaState)=>Unit) 
+class ButtonTextComponent[SceneType <: EventGameScene](sprite: Sprite, over: Sprite, var label: Label, x: Double, y: Double, listener:(DeltaState)=>Unit) 
 				extends ButtonComponent[SceneType](sprite, over, x, y, listener) {
 
   override def update(deltaState: DeltaState) {
