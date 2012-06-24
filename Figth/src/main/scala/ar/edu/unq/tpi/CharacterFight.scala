@@ -88,7 +88,6 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
   }
 
   override def update(deltaState: DeltaState) = {
-
   currentMove.update(this, deltaState)
     if (isMoving) {
       isMoving = !this.getAppearance().finish()

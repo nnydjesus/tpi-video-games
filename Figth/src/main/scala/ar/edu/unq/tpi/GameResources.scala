@@ -13,6 +13,8 @@ object GameEvents {
   val CABEZAL_MOVIDO = "CABEZAL_MOVIDO"
   val CABEZAL_SELECTED = "CABEZAL_SELECTED"
   val BACK_SELECT_CHARACTER = "BACK_SELECT_CHARACTER"
+  val SELECT_PLAYER = "SELECT_PLAYER"
+  val OPTIONS = "OPTIONS"
 
 }
 
@@ -43,6 +45,9 @@ object GameImage extends TraitResources {
   lazy val BACKTIMER = sprite("hud/backTimer.png")
   lazy val WIN_IMAGE = getImage("win.png")
   lazy val LOSE_IMAGE = getImage("lose.png")
+  lazy val INIT_BUTTON = sprite("button-bg.png")
+  lazy val INIT_BUTTON_OVER = sprite("button-over.png")
+  lazy val LOGO = sprite("init-logo.png")
   lazy val BUTTON_START = sprite("start.png")
   lazy val SWORD = sprite("sword.png")
   lazy val LOADING = sprite("loading.png")

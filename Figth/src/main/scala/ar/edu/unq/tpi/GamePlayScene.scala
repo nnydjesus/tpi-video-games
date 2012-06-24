@@ -20,8 +20,8 @@ import com.uqbar.vainilla.Game
 class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
   var finish = false
 
-  var character1 = new CharacterFight(new Player1(), new Character(characterAppearance1), this, 200, 800)
-  var character2 = new CharacterFight(new Player2(), new Character(characterAppearance2), this, 1200, 700)
+  var character1 = new CharacterFight(Player1, new Character(characterAppearance1), this, 200, 800)
+  var character2 = new CharacterFight(Player2, new Character(characterAppearance2), this, 1200, 700)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)

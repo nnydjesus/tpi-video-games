@@ -3,21 +3,44 @@ package ar.edu.unq.tpi
 import java.awt.Dimension
 import java.awt.Toolkit
 
+import scala.annotation.implicitNotFound
+
 import com.uqbar.vainilla.DesktopGameLauncher
 import com.uqbar.vainilla.Game
 
 import ar.edu.unq.tpi.resource.TraitResources
-import ar.edu.unq.tpi.traits.{ Event, FunctionEvent }
+import ar.edu.unq.tpi.traits.Event
+import ar.edu.unq.tpi.traits.FunctionEvent
 import ar.unq.tpi.components.Selectable
 
 class Fight extends Game with TraitResources {
+  var player1: Player = Player1
+  var player2: Player = null
 
   protected def initializeResources(): Unit = {
   }
 
   protected def setUpScenes(): Unit = {
+    //        setCurrentScene(new SelectCharacterScene(this))
+    //    playGame(Ragna, Arena1)
+    initScene()
+  }
+
+  def initScene() {
+    var initScene = new InitScene()
+    initScene.addEventListener(GameEvents.SELECT_PLAYER, selectPlayer)
+    initScene.addEventListener(GameEvents.OPTIONS, options)
+    setCurrentScene(initScene)
+  }
+
+  def selectPlayer: Event[InitScene, Player] => Unit = event => {
+    player2 = event.data
     setCurrentScene(new SelectCharacterScene(this))
     //    playGame(Ragna, Arena1)
+  }
+
+  def options: Event[InitScene, Any] => Unit = event => {
+    new ConfigureButtonsDialog(Player1)
   }
 
   def selectArena(character: SelectableCharacter) {

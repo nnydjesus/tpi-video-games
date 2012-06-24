@@ -105,8 +105,8 @@ class SelectCharacterScene(game: Fight) extends SelectScene() {
   init()
 
   def init() {
-    player1 = new Player1()
-    player2 = new Player2()
+    player1 = game.player1
+    player2 = game.player2
     createAnimationBackground()
     createAnimationSelectedCharacters()
     createMatrixCharacter()
