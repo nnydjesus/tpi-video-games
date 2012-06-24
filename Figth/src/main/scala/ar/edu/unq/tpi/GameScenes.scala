@@ -90,13 +90,15 @@ class SelectCharacterScene(game: Fight) extends SelectScene() {
   var start = GameImage.BUTTON_START
   var cursorFirstPlayer: Cabezal = null
   var cursorSecondPlayer: Cabezal = null
+  var animationCabezalFirst : Animation = null
+  var animationCabezalSecond : Animation = null
   var backgrondAnimation: Animation = null
   var matrixComponent: SpriteComponent[SelectCharacterScene] = null
   var characters: Buffer[CharacterAppearance] = Buffer[CharacterAppearance]()
   var matrixCharacter: MatrixSelectedCharacter = new MatrixSelectedCharacter(GameValues.WIDTH_MATRIX, GameValues.HEIGHT_MATRIX, this)
   var animationSelectedFirstCharacter = new AnimationComponent(new Animation(0, 0), -150, 200)
   var animationSelectedSecondCharacter = new AnimationComponent(new Animation(0, 0), 700, 200)
-
+  var countSelectedCharacterFinish = 0
   //  var 
   //var  aca voy a poner una variable para poder hacer lo de la seleccion
   
@@ -128,14 +130,10 @@ class SelectCharacterScene(game: Fight) extends SelectScene() {
   }
 
   def createCabezales() {
-    var cursorFirstPlayer = new Cabezal(player1, sprite("cabezal.png"), 1, 2, matrixComponent.getX(), matrixComponent.getY())
-    var cursorSecondPlayer = new Cabezal(player2, sprite("cabezal.png"), 1, 3, matrixComponent.getX(), matrixComponent.getY())
-    cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
-      animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation)
-    })
-    cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
-      animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation)
-    })
+    createAnimationCabezales()
+    cursorFirstPlayer = new Cabezal(player1,animationCabezalFirst, 1, 2, matrixComponent.getX(), matrixComponent.getY())
+    cursorSecondPlayer = new Cabezal(player2,animationCabezalSecond, 1, 3, matrixComponent.getX(), matrixComponent.getY())
+    this.addEventListenerCabezales()
     this.addComponent(cursorFirstPlayer)
     this.addComponent(cursorSecondPlayer)
   }
@@ -148,11 +146,51 @@ class SelectCharacterScene(game: Fight) extends SelectScene() {
 //    backgrondAnimation = new Animation(1 / 5D, background)
     this.addComponent(new SpriteComponent(sprite("background/0010.png"), 0, 0))
   }
+  def createAnimationCabezales(){
+    var cabezalFirst = new Array[Sprite](4)
+    var cabezalSecond = new Array[Sprite](4)		
+    for (i <- 1 until 5){
+      cabezalFirst(i-1) = sprite("cabezalFirst" + i + ".png")
+    }
+    for (i <- 1 until 5){
+      cabezalSecond(i-1) = sprite("cabezalSecond" + i + ".png")
+    }
+    animationCabezalFirst = new Animation(1/5D, cabezalFirst)
+    animationCabezalSecond = new Animation(1/5D, cabezalSecond)
+  }
+  
   def createAnimationSelectedCharacters() {
     this.addComponent(animationSelectedFirstCharacter)
     this.addComponent(animationSelectedSecondCharacter)
   }
-
+  def addEventListenerCabezales(){
+    cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
+      animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation)
+    })
+    cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_SELECTED, (e: Event[Cabezal, SelectableCharacter]) => {
+    
+     countSelectedCharacterFinish += 1
+    if(countSelectedCharacterFinish > 2){
+    	//game.selectArena(e.data)
+    }
+    
+    })
+     cursorFirstPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {
+    	 countSelectedCharacterFinish -= 1
+     })
+    cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
+      animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation)
+    })
+    cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_SELECTED, (e: Event[Cabezal, SelectableCharacter]) => {
+    	countSelectedCharacterFinish += 1
+    if(countSelectedCharacterFinish > 2){
+    	//game.selectArena(e.data)
+    }
+    })
+     cursorSecondPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {
+    	countSelectedCharacterFinish -= 1
+    })
+  }
   //  def onStart(delta: DeltaState) {
   //    game.selectArena(characterFirstSelected)
   //  }
