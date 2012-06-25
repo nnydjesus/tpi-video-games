@@ -10,6 +10,7 @@ import scala.collection.mutable.Buffer
 import scala.util.Random
 import ar.edu.unq.tpi.traits.Event
 import com.uqbar.vainilla.events.constants.Key
+import ar.unq.tpi.components.ScaleSpriteComponent
 
 class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComponent[SelectCharacterScene] {
 
@@ -68,7 +69,7 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
   }
 
   def createAnimationBackground() {
-    this.addComponent(new SpriteComponent(sprite("background/0010.png"), 0, 0))
+    this.addComponent(new SpriteComponent(ScaleSpriteComponent.scale(sprite("backgroundSelectCharacterScene.png"),this.game.getDisplayWidth() ,this.game.getDisplayHeight()), 0, 0))
   }
   def createAnimationCabezales() {
     var cabezalFirst = new Array[Sprite](4)
