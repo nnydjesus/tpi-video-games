@@ -1,37 +1,33 @@
 package ar.edu.unq.tpi
 import java.awt.event.KeyAdapter
 import java.awt.event.KeyEvent
+import java.awt.Color
 import java.awt.Dimension
+
+import scala.swing.TabbedPane.Page
+import scala.swing.event.FocusGained
+import scala.swing.event.FocusLost
+import scala.swing.event.KeyPressed
 import scala.swing.Action
+import scala.swing.BorderPanel
 import scala.swing.Button
 import scala.swing.Dialog
 import scala.swing.GridBagPanel
 import scala.swing.Label
-import scala.swing.MainFrame
-import scala.swing.MenuItem
-import scala.swing.SimpleSwingApplication
-import scala.swing.Swing
-import scala.swing.TextField
-import com.uqbar.vainilla.events.constants.Key
-import ar.edu.unq.tpi.traits.Event
-import scala.swing.event.EditDone
-import scala.swing.TextField
 import scala.swing.Reactor
-import scala.swing.event.KeyPressed
-import scala.swing.event.KeyTyped
-import scala.swing.event.FocusGained
-import java.awt.Color
-import scala.swing.event.FocusLost
-import scala.swing.test.UIDemo
 import scala.swing.TabbedPane
-import TabbedPane._
-import scala.swing.FlowPanel
-import scala.swing.BorderPanel
+import scala.swing.TextField
 
-class ConfigureButtonsDialog(player: Player) extends Dialog {
+import com.uqbar.vainilla.events.constants.Key
+
+import ar.edu.unq.tpi.traits.Event
+import ar.edu.unq.tpi.Player
+import ar.edu.unq.tpi.PlayerKey
+
+class ConfigureButtonsDialog() extends Dialog {
 
   title = "Configuracion de Botones"
-
+    
   contents = new BorderPanel() {
 	  
     add(new TabbedPane {
@@ -39,7 +35,7 @@ class ConfigureButtonsDialog(player: Player) extends Dialog {
       pages += new Page("Player2", new PlayerPanel(Player2))
     }, BorderPanel.Position.North)
 
-    add(new Button(new Action("save") { def apply() = { ConfigureButtonsDialog.this.close() } }), BorderPanel.Position.Center) 
+    add(new Button(new Action("save") { def apply() = { Player1.saveConf(); Player2.saveConf(); close()} }), BorderPanel.Position.Center) 
   }
 
   open()
@@ -75,7 +71,7 @@ class PlayerPanel(player: Player) extends GridBagPanel {
 
 object Configure {
   def main(args: Array[String]) {
-    new ConfigureButtonsDialog(Player1)
+    new ConfigureButtonsDialog()
     //    UIDemo.startup(args)
   }
 }

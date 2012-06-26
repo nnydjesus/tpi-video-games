@@ -7,27 +7,32 @@ import ar.edu.unq.tpi.resource.TraitResources
 import scala.xml.NodeSeq
 import ar.edu.unq.tpi.traits.EventGameComponent
 import ar.edu.unq.tpi.traits.Event
+import scala.xml.Elem
+import java.io._
+import scala.io._
+import java.io.File
+import  ar.edu.unq.tpi.RichFile._
 
-abstract class Player(tag:String) extends TraitResources{
-  
-  val controls = xmlFromFile("controls/controllers.xml")
-  var thisControls = controls\ tag
-  
+
+abstract class  Player(file:String) extends TraitResources{
+ var fileName = "controls/" + file + ".xml"
+  var thisControls = xmlFromFile(fileName)
+
   var LEFT = new PlayerKey("LEFT", thisControls)
   var RIGHT = new PlayerKey("RIGHT", thisControls)
   var UP = new PlayerKey("UP", thisControls)
   var DOWN = new PlayerKey("DOWN", thisControls)
   var ENTER = new PlayerKey("ENTER", thisControls)
-  
+
   var K_HIGH_KICK1 = new PlayerKey("K_HIGH_KICK1", thisControls)
-  var K_LOW_KICK1 = new PlayerKey("K_LOW_KICK1", thisControls) 
+  var K_LOW_KICK1 = new PlayerKey("K_LOW_KICK1", thisControls)
   var K_HIGH_KICK2 = new PlayerKey("K_HIGH_KICK2", thisControls)
   var K_LOW_KICK2 = new PlayerKey("K_LOW_KICK2", thisControls)
   var K_HIGH_PUCH1 = new PlayerKey("K_HIGH_PUNCH1", thisControls)
   var K_LOW_PUNCH1 = new PlayerKey("K_LOW_PUNCH1", thisControls)
   var K_HIGH_PUCH2 = new PlayerKey("K_HIGH_PUNCH2", thisControls)
   var K_LOW_PUNCH2 = new PlayerKey("K_LOW_PUNCH2", thisControls)
-  
+
   val keys = List(LEFT, RIGHT, UP, DOWN, ENTER, K_HIGH_KICK1, K_HIGH_KICK2, K_HIGH_PUCH1, K_HIGH_PUCH2, K_LOW_KICK1, K_LOW_KICK2, K_LOW_PUNCH1, K_LOW_PUNCH2)
 
   //  var COMBO1 = Array(Key.T)
@@ -35,18 +40,19 @@ abstract class Player(tag:String) extends TraitResources{
   //  var COMBO3 = Array(Key.T)
   //  var COMBO4 = Array(Key.T)
 
+
   var _character: CharacterFight = null
 
   def character = this._character
   def character_=(anCharacter: CharacterFight) = {
     this._character = anCharacter
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1.key, new FunctionSceneListener((d)=>character.changeMove(HIGH_KICK1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2.key, new FunctionSceneListener((d)=>character.changeMove(HIGH_KICK2)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1.key, new FunctionSceneListener((d)=>character.changeMove(LOW_KICK1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2.key, new FunctionSceneListener((d)=>character.changeMove(LOW_KICK2)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1.key, new FunctionSceneListener((d)=>character.changeMove(LOW_PUNCH1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1.key, new FunctionSceneListener((d)=>character.changeMove(HIGH_PUCH1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2.key, new FunctionSceneListener((d)=>character.changeMove(LOW_PUNCH2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1.key, new FunctionSceneListener((d) => character.changeMove(HIGH_KICK1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2.key, new FunctionSceneListener((d) => character.changeMove(HIGH_KICK2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1.key, new FunctionSceneListener((d) => character.changeMove(LOW_KICK1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2.key, new FunctionSceneListener((d) => character.changeMove(LOW_KICK2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1.key, new FunctionSceneListener((d) => character.changeMove(LOW_PUNCH1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1.key, new FunctionSceneListener((d) => character.changeMove(HIGH_PUCH1)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2.key, new FunctionSceneListener((d) => character.changeMove(LOW_PUNCH2)))
   }
 
   def update(deltaState: DeltaState): Boolean = {
@@ -69,12 +75,23 @@ abstract class Player(tag:String) extends TraitResources{
     return true
 
   }
+  
+  def saveConf(){
+    var conf =
+    <Control>
+	 {
+            for (key <- keys) yield <key id={ key.name} key={key.key.getCode()}> </key>
+	 }
+	 </Control>
+    new File(PATH + fileName).text = conf.toString()
+  }
+  
 }
 
-object Player1 extends Player("Player1") {}
-object Player2 extends Player("Player2"){}
+object Player1 extends Player("controlPlayer1") {}
+object Player2 extends Player("controlPlayer2") {}
 
-object PlayerCPU extends Player("Player2") {
+object PlayerCPU extends Player("controlPlayer2") {
 
   override def update(deltaState: DeltaState): Boolean = {
     if ((Math.random * 100) >= 50) {
@@ -97,18 +114,18 @@ object PlayerCPU extends Player("Player2") {
 
 }
 
+class PlayerKey(var name: String, node: NodeSeq) extends EventGameComponent[PlayerKey] {
+  var conf = (node \"key") find { n=> (n \ "@id" ).text == name }
+  var key = Key.fromCode((conf.get \ "@key").text)
 
-class PlayerKey(var name:String, node:NodeSeq) extends EventGameComponent[PlayerKey]{
-  var key = Key.fromCode((node\name).text)
-  
   def setKey(k: Key) = {
     key = k
     dispatchEvent(new Event("key", this, k))
   }
-  
-  def save(node:NodeSeq, futureKey:Key){
+
+  def save(node: NodeSeq, futureKey: Key) {
     key = futureKey
-//    node.foreach(a )
-//    node.dropWhile(a => a.length>0) 
+    //    node.foreach(a )
+    //    node.dropWhile(a => a.length>0) 
   }
 }

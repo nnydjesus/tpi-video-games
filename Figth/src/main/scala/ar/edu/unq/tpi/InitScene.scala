@@ -28,9 +28,9 @@ class InitScene extends GameScene() with EventGameScene with TraitResources with
     this.addKeyPressetListener(background, Key.DOWN, new FunctionSceneListener(next))
     this.addKeyPressetListener(background, Key.UP, new FunctionSceneListener(prev))
     this.addKeyPressetListener(background, Key.ENTER, new FunctionSceneListener(enter))
-    this.buttonList = DoubleLinkedList(new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(25f), Color.WHITE, "1 Player"), 500,500, onePlayer, true),
-    new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(25f), Color.WHITE, "2 Player"), 500,550, twoPlayer),
-    new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(25f), Color.WHITE, "option"), 500,600, options))
+    this.buttonList = DoubleLinkedList(new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "1 Player"), 1300,500, onePlayer, true),
+    new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "2 Player"), 1300,560, twoPlayer),
+    new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "option"), 1300,615, options))
     
     this.addComponents(buttonList)
   }

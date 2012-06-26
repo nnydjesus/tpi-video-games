@@ -18,9 +18,9 @@ class LifeBar(barSprite: Sprite, backgroundbar: Sprite, bar1: Sprite, bar2: Spri
     var graphics = image.createGraphics()
     bar1.render(this, graphics)
     if(invertir){
-      selectedImage.renderAt(this.getX().toInt + (selectedImage.getWidth().toInt/2) + 20, this.getY().toInt+40, graphics)
+      selectedImage.renderAt(this.getX().toInt + (selectedImage.getWidth().toInt/2) -45, this.getY().toInt, graphics)
     }else{
-      selectedImage.renderAt(this.getX().toInt + bar1.getWidth().toInt - selectedImage.getWidth().toInt -20, this.getY().toInt+40, graphics)
+      selectedImage.renderAt(this.getX().toInt + bar1.getWidth().toInt - selectedImage.getWidth().toInt +5, this.getY().toInt, graphics)
     }
     bar2.render(this, graphics)
     backgroundbar.render(this, graphics)

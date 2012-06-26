@@ -1,16 +1,16 @@
 package ar.edu.unq.tpi
 
-import ar.edu.unq.tpi.traits.EventGameComponent
-import com.uqbar.vainilla.appearances.Animation
-import ar.unq.tpi.components.SpriteComponent
-import ar.unq.tpi.components.SelectScene
-import ar.unq.tpi.components.AnimationComponent
-import com.uqbar.vainilla.appearances.Sprite
 import scala.collection.mutable.Buffer
 import scala.util.Random
+import com.uqbar.vainilla.appearances.Animation
+import com.uqbar.vainilla.appearances.Sprite
 import ar.edu.unq.tpi.traits.Event
-import com.uqbar.vainilla.events.constants.Key
+import ar.edu.unq.tpi.traits.EventGameComponent
+import ar.unq.tpi.components.AnimationComponent
 import ar.unq.tpi.components.ScaleSpriteComponent
+import ar.unq.tpi.components.SelectScene
+import ar.unq.tpi.components.SpriteComponent
+import com.uqbar.vainilla.Game
 
 class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComponent[SelectCharacterScene] {
 
@@ -28,12 +28,12 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
   var characters: Buffer[CharacterAppearance] = Buffer[CharacterAppearance]()
   var matrixCharacter: MatrixSelectedCharacter = new MatrixSelectedCharacter(GameValues.WIDTH_MATRIX, GameValues.HEIGHT_MATRIX, this)
   var animationSelectedFirstCharacter = new AnimationComponent(new Animation(0, 0), -150, 200)
-  var animationSelectedSecondCharacter = new AnimationComponent(new Animation(0, 0), 700, 200)
+  var animationSelectedSecondCharacter = new AnimationComponent(new Animation(0, 0), 1000, 200)
   var countSelectedCharacterFinish = 0
 
-  init()
 
-  def init() {
+  override def setGame(aGame:Game) {
+    super.setGame(aGame)
     player1 = game.player1
     player2 = game.player2
     createAnimationBackground()
@@ -80,37 +80,36 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
     for (i <- 1 until 5) {
       cabezalSecond(i - 1) = sprite("cabezalSecond" + i + ".png")
     }
-    animationCabezalFirst = new Animation(1 / 5D, cabezalFirst)
-    animationCabezalSecond = new Animation(1 / 5D, cabezalSecond)
+    animationCabezalFirst = new Animation(1 / 10D, cabezalFirst)
+    animationCabezalSecond = new Animation(1 / 10D, cabezalSecond)
   }
 
   def createAnimationSelectedCharacters() {
     this.addComponent(animationSelectedFirstCharacter)
     this.addComponent(animationSelectedSecondCharacter)
   }
+  
   def addEventListenerCabezales() {
     cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
-      animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation)
+      animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation(Orientation.RIGHT))
     })
     cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_SELECTED, (e: Event[Cabezal, SelectableCharacter]) => {
       incrementCount()
       selectCharacterFirst = e.data
       checkSelection()
     })
-    cursorFirstPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {
-      decrementCount()
-    })
+    cursorFirstPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {    decrementCount()   })
+    
     cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
-      animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation)
+      animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation(Orientation.LEFT))
     })
     cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_SELECTED, (e: Event[Cabezal, SelectableCharacter]) => {
       incrementCount()
       selectCharacterSecond = e.data
       checkSelection()
     })
-    cursorSecondPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {
-      decrementCount()
-    })
+    
+    cursorSecondPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {  decrementCount()  })
   }
 
   def checkSelection() {

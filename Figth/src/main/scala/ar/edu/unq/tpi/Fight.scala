@@ -22,8 +22,8 @@ class Fight extends Game with TraitResources {
 
   protected def setUpScenes(): Unit = {
     //        setCurrentScene(new SelectCharacterScene(this))
-        playGame(Ragna, Litchi, Arena1)
-//    initScene()
+//        playGame(Ragna, Litchi, Arena1)
+    initScene()
   }
 
   def initScene() {
@@ -40,7 +40,7 @@ class Fight extends Game with TraitResources {
   }
 
   def options: Event[InitScene, Any] => Unit = event => {
-    new ConfigureButtonsDialog(Player1)
+    new ConfigureButtonsDialog()
   }
 
   def selectArena(character1: SelectableCharacter, character2 : SelectableCharacter) {

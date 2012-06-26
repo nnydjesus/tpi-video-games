@@ -21,7 +21,7 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
   var finish = false
 
   var character1 = new CharacterFight(Player1, new Character(characterAppearance1), this, 200, 800)
-  var character2 = new CharacterFight(Player2, new Character(characterAppearance2), this, 1200, 700)
+  var character2 = new CharacterFight(Player2, new Character(characterAppearance2), this, 1200, 800)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
