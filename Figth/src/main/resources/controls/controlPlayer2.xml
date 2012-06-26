@@ -1,0 +1,3 @@
+<Control>
+	 <key key="LEFT" id="LEFT"> </key><key key="RIGHT" id="RIGHT"> </key><key key="UP" id="UP"> </key><key key="DOWN" id="DOWN"> </key><key key="ENTER" id="ENTER"> </key><key key="NUMPAD9" id="K_HIGH_KICK1"> </key><key key="NUMPAD7" id="K_HIGH_KICK2"> </key><key key="NUMPAD5" id="K_HIGH_PUNCH1"> </key><key key="NUMPAD3" id="K_HIGH_PUNCH2"> </key><key key="NUMPAD8" id="K_LOW_KICK1"> </key><key key="NUMPAD6" id="K_LOW_KICK2"> </key><key key="NUMPAD4" id="K_LOW_PUNCH1"> </key><key key="NUMPAD2" id="K_LOW_PUNCH2"> </key>
+	 </Control>
