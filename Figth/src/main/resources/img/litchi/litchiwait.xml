@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://texturepacker.com-->
-<!-- $TexturePacker:SmartUpdate:7151f9427bb3ab6aa6419e0fa3094ffc$ -->
+<!-- $TexturePacker:SmartUpdate:791a90750d557f21b84a0d8b963971ca$ -->
 <!--Format:
 n  => name of the sprite
 x  => sprite x pos in texture
@@ -13,14 +13,14 @@ oW => sprite's original width (only available if trimmed)
 oH => sprite's original height (only available if trimmed)
 r => 'y' only set if sprite is rotated
 -->
-<TextureAtlas imagePath="litchiwait.png" width="1024" height="2048">
-    <sprite n="lc000_00" x="2" y="2" w="245" h="470"/>
-    <sprite n="lc000_01" x="249" y="2" w="245" h="471"/>
-    <sprite n="lc000_02" x="496" y="2" w="244" h="471"/>
-    <sprite n="lc000_03" x="742" y="2" w="243" h="472"/>
-    <sprite n="lc000_04" x="2" y="476" w="243" h="472"/>
-    <sprite n="lc000_05" x="247" y="476" w="240" h="472"/>
-    <sprite n="lc000_06" x="489" y="476" w="243" h="472"/>
-    <sprite n="lc000_07" x="734" y="476" w="245" h="472"/>
-    <sprite n="lc000_08" x="2" y="950" w="246" h="472"/>
+<TextureAtlas imagePath="wait.png" width="2048" height="2048">
+    <sprite n="lc000_00" x="2" y="2" w="679" h="591"/>
+    <sprite n="lc000_01" x="683" y="2" w="679" h="591"/>
+    <sprite n="lc000_02" x="1364" y="2" w="679" h="591"/>
+    <sprite n="lc000_03" x="2" y="595" w="679" h="591"/>
+    <sprite n="lc000_04" x="683" y="595" w="679" h="591"/>
+    <sprite n="lc000_05" x="1364" y="595" w="679" h="591"/>
+    <sprite n="lc000_06" x="2" y="1188" w="679" h="591"/>
+    <sprite n="lc000_07" x="683" y="1188" w="679" h="591"/>
+    <sprite n="lc000_08" x="1364" y="1188" w="679" h="591"/>
 </TextureAtlas>

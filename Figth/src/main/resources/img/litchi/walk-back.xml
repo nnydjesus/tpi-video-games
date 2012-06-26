@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://texturepacker.com-->
+<!-- $TexturePacker:SmartUpdate:7d253376341389579d3361e0f301a49f$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="back.png" width="2048" height="4096">
+    <sprite n="lc031_00" x="2" y="2" w="679" h="591"/>
+    <sprite n="lc031_01" x="683" y="2" w="679" h="591"/>
+    <sprite n="lc031_02" x="1364" y="2" w="679" h="591"/>
+    <sprite n="lc031_03" x="2" y="595" w="679" h="591"/>
+    <sprite n="lc031_04" x="683" y="595" w="679" h="591"/>
+    <sprite n="lc031_05" x="1364" y="595" w="679" h="591"/>
+    <sprite n="lc031_06" x="2" y="1188" w="679" h="591"/>
+    <sprite n="lc031_07" x="683" y="1188" w="679" h="591"/>
+    <sprite n="lc031_08" x="1364" y="1188" w="679" h="591"/>
+    <sprite n="lc031_09" x="2" y="1781" w="679" h="591"/>
+    <sprite n="lc031_10" x="683" y="1781" w="679" h="591"/>
+    <sprite n="lc031_11" x="1364" y="1781" w="679" h="591"/>
+    <sprite n="lc031_12" x="2" y="2374" w="679" h="591"/>
+    <sprite n="lc031_13" x="683" y="2374" w="679" h="591"/>
+    <sprite n="lc031_14" x="1364" y="2374" w="679" h="591"/>
+</TextureAtlas>
