@@ -16,6 +16,7 @@ import ar.unq.tpi.components.Selectable
 import ar.unq.tpi.components.Stats
 import traits.EventGameComponent
 import com.uqbar.vainilla.Game
+import ar.unq.tpi.components.SpriteCenterComponent
 
 class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
   var finish = false
@@ -26,7 +27,7 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
 
-  var finishAnimation = new SpriteCenterComponent(winAnimate, game.getDisplayWidth(), game.getDisplayHeight(), 100)
+  var finishAnimation = new RoundSpriteCenterComponent(winAnimate, game.getDisplayWidth(), game.getDisplayHeight(), 100)
   var state: StateRound = FirstRound
   var countVictorysChF: Int = 0
   var countVictorysChS: Int = 0
@@ -72,7 +73,7 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     character2.setX(900)
     character2.setY(800)
 
-    val roundComponent = new SpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 2)
+    val roundComponent = new RoundSpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 2)
     roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new FunctionEvent(onStart))
 
     this.addComponent(roundComponent)
@@ -166,6 +167,6 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
 
 }
 
-class SpriteCenterComponent(sprite: Sprite, override val width: Double, override val height: Double, override val meantime: Double) extends SpriteComponent[GamePlayScene](sprite, 0, 0)
-  with CenterComponent[GamePlayScene, Sprite] with RoundComponent[GamePlayScene, Sprite] {}
+class RoundSpriteCenterComponent(sprite: Sprite, override val width: Double, override val height: Double, override val meantime: Double=0) extends SpriteCenterComponent[GamePlayScene](sprite, width, height)
+with RoundComponent[GamePlayScene, Sprite] {}
 

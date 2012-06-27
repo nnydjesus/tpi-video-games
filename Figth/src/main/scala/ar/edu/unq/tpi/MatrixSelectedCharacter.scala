@@ -6,8 +6,9 @@ import java.awt.image.BufferedImage
 import com.uqbar.vainilla.appearances.Sprite
 import ar.unq.tpi.components.SelectComponent
 import scala.collection.mutable.Buffer
+import ar.edu.unq.tpi.resource.TraitResources
 
-class MatrixSelectedCharacter(c: Int, f: Int, scene: SelectCharacterScene) extends Matrix[SelectableCharacter](c, f) {
+class MatrixSelectedCharacter(c: Int, f: Int, scene: SelectCharacterScene) extends Matrix[SelectableCharacter](c, f) with TraitResources{
   var pi = 0
   var pj = 0
   
@@ -26,6 +27,7 @@ class MatrixSelectedCharacter(c: Int, f: Int, scene: SelectCharacterScene) exten
     var graphics: java.awt.Graphics2D = imageBigCharacter.createGraphics()
     this.elems.keys.foreach(i => {
       this.elems(i).keys.foreach(j => {
+       sprite("backgroundMatrix.png").renderAt(i * GameValues.WIDTH_SELECTED_CHARACTER, j * GameValues.HEIGHT_SELECTED_CHARACTER, graphics)
        this(i, j).image.renderAt(i * GameValues.WIDTH_SELECTED_CHARACTER, j * GameValues.HEIGHT_SELECTED_CHARACTER, graphics)
       })
     })

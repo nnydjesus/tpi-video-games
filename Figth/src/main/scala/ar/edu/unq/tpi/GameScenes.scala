@@ -12,6 +12,7 @@ import ar.edu.unq.tpi.traits.EventGameComponent
 import ar.unq.tpi.components.SelectScene
 import ar.unq.tpi.components.SpriteComponent
 import java.awt.Color
+import ar.unq.tpi.components.SpriteCenterComponent
 
 class LoadingScene(characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene() with TraitResources with EventGameComponent[LoadingScene] {
 
@@ -39,10 +40,8 @@ class LoadingScene(characterAppearance1: CharacterAppearance, characterAppearanc
 
 class SelectArenaScene(game: Fight, character1: CharacterAppearance, character2: CharacterAppearance) extends SelectScene() {
 
-  var ArenaForSelected: DoubleLinkedList[Sprite] = null
-  var previous: Sprite = null
-  var elem: Sprite = null
-  var next: Sprite = null
+  var actuallyStage : Sprite = null
+    		  
   //  
   //  this.addComponent(new SelectComponent(this, Arena1, initialX, initialY, width, height))
   //  this.addComponent(new SelectComponent(this, Arena2, initialX + (width) + padding, initialY, width, height))

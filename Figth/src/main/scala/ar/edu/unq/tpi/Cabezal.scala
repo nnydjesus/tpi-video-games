@@ -11,7 +11,7 @@ import ar.edu.unq.tpi.traits.Event
 import com.uqbar.vainilla.appearances.Animation
 import ar.unq.tpi.components.AnimationComponent
 
-class Cabezal(animation: Animation) extends AnimationComponent[SelectCharacterScene,Cabezal](animation, 0, 0) with EventGameComponent[Cabezal] {
+class Cabezal private(animation: Animation) extends AnimationComponent[SelectCharacterScene,Cabezal](animation, 0, 0) with EventGameComponent[Cabezal] {
 
   val MOVE_TO_UP = new FunctionSceneListener((d) => this.moveUp())
   val MOVE_TO_DOWN = new FunctionSceneListener((d) => this.moveDown())

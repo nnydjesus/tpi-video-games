@@ -16,12 +16,17 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
 
   var player1: Player = null
   var player2: Player = null
-  var start = GameImage.BUTTON_START
+  var stage : StageComponent = null
+  var buttonLeft: ButtonStage = null
+  var buttonRight: ButtonStage = null
+  var stages: Array[Sprite] = new Array[Sprite](4)
   var cursorFirstPlayer: Cabezal = null
   var cursorSecondPlayer: Cabezal = null
   var animationCabezalFirst: Animation = null
   var animationCabezalSecond: Animation = null
   var backgrondAnimation: Animation = null
+  var nameCharacterFirst : SpriteComponent[SelectCharacterScene] = null
+  var nameCharacterSecond : SpriteComponent[SelectCharacterScene] = null
   var selectCharacterFirst: SelectableCharacter = null
   var selectCharacterSecond: SelectableCharacter = null
   var matrixComponent: SpriteComponent[SelectCharacterScene] = null
@@ -30,16 +35,19 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
   var animationSelectedFirstCharacter = new AnimationComponent(new Animation(0, 0), -150, 200)
   var animationSelectedSecondCharacter = new AnimationComponent(new Animation(0, 0), 1000, 200)
   var countSelectedCharacterFinish = 0
+  var countIndexStage = 0
 
-
-  override def setGame(aGame:Game) {
+  override def setGame(aGame: Game) {
     super.setGame(aGame)
     player1 = game.player1
     player2 = game.player2
     createAnimationBackground()
+    createStageSelected()
     createAnimationSelectedCharacters()
+    createNamesOfCharacters()
     createMatrixCharacter()
     createCabezales()
+    createNamesOfCharacters()
     addListener()
   }
 
@@ -59,6 +67,21 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
     }
   }
 
+  def createStageSelected() {
+    for (i <- 1 until 5) {
+      stages(i - 1) = sprite("stage" + i + ".png")
+    }
+  }
+  
+  def createNamesOfCharacters(){
+    var nameFirst = sprite("nameCharacterFirst.png")
+    var nameSecond = sprite("nameCharacterSecond.png")
+    nameCharacterFirst = new SpriteComponent(sprite("nameCharacterFirst.png"), 30,game.getDisplayHeight() - nameFirst.getHeight()) 
+    nameCharacterSecond = new SpriteComponent(sprite("nameCharacterSecond.png"),game.getDisplayWidth() - nameSecond.getWidth(),game.getDisplayHeight() - nameSecond.getHeight()) 
+    this.addComponent(nameCharacterFirst)
+    this.addComponent(nameCharacterSecond)
+  }
+
   def createCabezales() {
     createAnimationCabezales()
     cursorFirstPlayer = new Cabezal(player1, animationCabezalFirst, 1, 2, matrixComponent.getX(), matrixComponent.getY())
@@ -69,7 +92,7 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
   }
 
   def createAnimationBackground() {
-    this.addComponent(new SpriteComponent(ScaleSpriteComponent.scale(sprite("backgroundSelectCharacterScene.png"),this.game.getDisplayWidth() ,this.game.getDisplayHeight()), 0, 0))
+    this.addComponent(new SpriteComponent(ScaleSpriteComponent.scale(sprite("backgroundSelectCharacterScene.png"), this.game.getDisplayWidth(), this.game.getDisplayHeight()), 0, 0))
   }
   def createAnimationCabezales() {
     var cabezalFirst = new Array[Sprite](4)
@@ -88,7 +111,7 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
     this.addComponent(animationSelectedFirstCharacter)
     this.addComponent(animationSelectedSecondCharacter)
   }
-  
+
   def addEventListenerCabezales() {
     cursorFirstPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
       animationSelectedFirstCharacter.setAppearance(e.data.character.selectedAnimation(Orientation.RIGHT))
@@ -98,8 +121,8 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
       selectCharacterFirst = e.data
       checkSelection()
     })
-    cursorFirstPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {    decrementCount()   })
-    
+    cursorFirstPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => { decrementCount() })
+
     cursorSecondPlayer.addEventListener(GameEvents.CABEZAL_MOVIDO, (e: Event[Cabezal, SelectableCharacter]) => {
       animationSelectedSecondCharacter.setAppearance(e.data.character.selectedAnimation(Orientation.LEFT))
     })
@@ -108,8 +131,8 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
       selectCharacterSecond = e.data
       checkSelection()
     })
-    
-    cursorSecondPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => {  decrementCount()  })
+
+    cursorSecondPlayer.addEventListener(GameEvents.BACK_SELECT_CHARACTER, (e: Event[Cabezal, Any]) => { decrementCount() })
   }
 
   def checkSelection() {
@@ -120,8 +143,63 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
 
   def incrementCount() = countSelectedCharacterFinish += 1
   def decrementCount() = countSelectedCharacterFinish -= 1
-  def selectArena() = game.selectArena(selectCharacterFirst, selectCharacterSecond)
 
+  def selectArena() {
+    this.ocultarScene()
+
+    game.selectArena(selectCharacterFirst, selectCharacterSecond)
+  }
+
+  def createStageComponent() {
+    var button  = sprite("buttonLeft.png")
+    var button2 = sprite("buttonRight.png")
+    stage = new StageComponent(stages(0), game.getDisplayWidth(), game.getDisplayHeight())
+    buttonLeft = new ButtonStage(sprite("buttonLeft.png"),stage.getX() - button.getWidth() ,stage.getY() - button.getHeight() / 2)
+    buttonRight = new ButtonStage(sprite("buttonRight.png"), stage.getX() + stage.width + button2.getWidth() / 2 ,stage.getY() - button.getHeight() / 2)
+    addListenerStage()
+    
+  }
+
+  def ocultarScene() {
+
+  }
+
+  def addListenerStage() {
+    stage.addEventListener(GameEvents.CHANGE_NEXT_STAGE, (e: Event[StageComponent, Any]) => {
+    	buttonLeft.setAppearance(sprite("imagen.png"))
+      if (stages.length > countIndexStage) {
+        incrementIndex()
+        e.target.setAppearance(stages(countIndexStage))
+      } else {
+        countIndexStage = 0
+        e.target.setAppearance(stages(countIndexStage))
+      }
+    })
+    stage.addEventListener(GameEvents.CHANGE_PREVIOUS_STAGE, (e: Event[StageComponent, Any]) => {
+    	buttonRight.setAppearance(sprite("imagen.png"))
+      if (countIndexStage == 0) {
+        countIndexStage = (stages.length - 1)
+        e.target.setAppearance(stages(countIndexStage))
+      } else {
+        decrementCount()
+        e.target.setAppearance(stages(countIndexStage))
+      }
+    })
+    stage.addEventListener(GameEvents.ACCEPT_STAGE, (e: Event[StageComponent, Sprite]) => {
+    	//game.playGame( selectCharacterFirst , selectCharacterSecond, e.data)
+    })
+  }
+
+  def incrementIndex() {
+    if (countIndexStage >= 0) {
+      countIndexStage += 1
+    }
+  }
+  def decrementIndex() {
+    if ((countIndexStage > 0)) {
+      countIndexStage -= 1
+    }
+  }
   def addListener() {
     this.addEventListener(GameEvents.ALL_PLAYER_SELECT_CHARACTER, (e: Event[SelectCharacterScene, (SelectableCharacter, SelectCharacterScene)]) => {
       this.selectArena()
