@@ -30,6 +30,9 @@ object GameValues {
   val PADDING_CHARACTER = 10
   val WIDTH_MATRIX = 6
   val HEIGHT_MATRIX = 6
+  val WIDTH_CHARACTER_ANIMATION = 567
+  val HEIGHT_CHARACTER_ANIMATION = 454
+    
 }
 
 object Fonts extends TraitResources {
