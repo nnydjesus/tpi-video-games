@@ -5,17 +5,19 @@ import com.uqbar.vainilla.DeltaState
 import com.uqbar.vainilla.events.constants.Key
 import scala.collection.mutable.Buffer
 import scala.collection.mutable.Map
+import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 import com.uqbar.vainilla.GameComponent
 
 trait EventGameScene extends GameScene {
 
-  val keyPressetListeners = Map[Key, Map[Any, Buffer[FunctionSceneListener]]]()
-  val keyReleasedListeners = Map[Key, Map[Any, Buffer[FunctionSceneListener]]]()
-  val keyBeingHoldListeners = Map[Key, Map[Any, Buffer[FunctionSceneListener]]]()
+  val keyPressetListeners = Map[List[Key], Map[Any, Buffer[FunctionSceneListener]]]()
+  val keyReleasedListeners = Map[List[Key], Map[Any, Buffer[FunctionSceneListener]]]()
+  val keyBeingHoldListeners = Map[List[Key], Map[Any, Buffer[FunctionSceneListener]]]()
 
-  val mousePressetListeners = Map[MouseButton, Map[Any, Buffer[FunctionSceneListener]]]()
-  val mouseReleasedListeners = Map[MouseButton, Map[Any, Buffer[FunctionSceneListener]]]()
-  val mouseBeingHoldListeners = Map[MouseButton, Map[Any, Buffer[FunctionSceneListener]]]()
+  val mousePressetListeners = Map[List[MouseButton], Map[Any, Buffer[FunctionSceneListener]]]()
+  val mouseReleasedListeners = Map[List[MouseButton], Map[Any, Buffer[FunctionSceneListener]]]()
+  val mouseBeingHoldListeners = Map[List[MouseButton], Map[Any, Buffer[FunctionSceneListener]]]()
 
   override def updateComponent(component: GameComponent[_, _], deltaState: DeltaState) {
     processListener(component, keyPressetListeners, deltaState, deltaState.isKeyPressed)
@@ -28,58 +30,59 @@ trait EventGameScene extends GameScene {
     super.updateComponent(component, deltaState)
   }
 
-  def removeKeyPressetListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    removeListener(component, keyPressetListeners, key, listener)
+  def removeKeyPressetListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    removeListener(component, keyPressetListeners, listener, keys.toList)
   }
-  def removeKeyReleasedListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    removeListener(component, keyReleasedListeners, key, listener)
+  def removeKeyReleasedListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    removeListener(component, keyReleasedListeners, listener, keys.toList)
   }
-  def removeKeyBeingHoldListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    removeListener(component, keyBeingHoldListeners, key, listener)
-  }
-
-  def removeMousePressetListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    removeListener(component, mousePressetListeners, button, listener)
-  }
-  def removeMouseReleasedListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    removeListener(component, mouseReleasedListeners, button, listener)
-  }
-  def removeMouseBeingHoldListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    removeListener(component, mouseBeingHoldListeners, button, listener)
+  def removeKeyBeingHoldListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    removeListener(component, keyBeingHoldListeners, listener, keys.toList)
   }
 
-  def addKeyPressetListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    addListener(component, keyPressetListeners, key, listener)
+  def removeMousePressetListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    removeListener(component, mousePressetListeners, listener, button.toList)
   }
-  def addKeyReleasedListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    addListener(component, keyReleasedListeners, key, listener)
+  def removeMouseReleasedListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    removeListener(component, mouseReleasedListeners, listener, button.toList)
   }
-  def addKeyBeingHoldListener(component: Any, key: Key, listener: FunctionSceneListener) = {
-    addListener(component, keyBeingHoldListeners, key, listener)
-  }
-
-  def addMousePressetListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    addListener(component, mousePressetListeners, button, listener)
-  }
-  def addMouseReleasedListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    addListener(component, mouseReleasedListeners, button, listener)
-  }
-  def addMouseBeingHoldListener(component: Any, button: MouseButton, listener: FunctionSceneListener) = {
-    addListener(component, mouseBeingHoldListeners, button, listener)
+  def removeMouseBeingHoldListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    removeListener(component, mouseBeingHoldListeners, listener, button.toList)
   }
 
-  protected def processListener[A](component: Any, listeners: Map[A, Map[Any, Buffer[FunctionSceneListener]]], deltaState: DeltaState, method: (A) => Boolean) {
-    listeners.keys.foreach(key => {
-      if (method(key)) {
-        if (listeners(key).contains(component)) {
-          listeners(key)(component).foreach(
+  def addKeyPressetListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    addListener(component, keyPressetListeners, listener, keys.toList)
+  }
+  def addKeyReleasedListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    addListener(component, keyReleasedListeners, listener, keys.toList)
+  }
+  def addKeyBeingHoldListener(component: Any, listener: FunctionSceneListener, keys: Key*) = {
+    addListener(component, keyBeingHoldListeners, listener, keys.toList)
+  }
+
+  def addMousePressetListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    addListener(component, mousePressetListeners, listener, button.toList)
+  }
+  def addMouseReleasedListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    addListener(component, mouseReleasedListeners, listener, button.toList)
+  }
+  def addMouseBeingHoldListener(component: Any, listener: FunctionSceneListener, button: MouseButton*) = {
+    addListener(component, mouseBeingHoldListeners, listener, button.toList)
+  }
+
+  protected def processListener[A<:List[B], B](component: Any, listeners: Map[A, Map[Any, Buffer[FunctionSceneListener]]], deltaState: DeltaState, method: (B) => Boolean) {
+    listeners.keys.foreach(keys => {
+      var satisfy = keys.foldLeft(true)((a, j) => a && method(j))
+      if (satisfy) {
+        if (listeners(keys).contains(component)) {
+          listeners(keys)(component).foreach(
             listener => listener(deltaState))
         }
       }
     })
   }
 
-  protected def addListener[E](component: Any, map: Map[E, Map[Any, Buffer[FunctionSceneListener]]], e: E, listener: FunctionSceneListener) {
+  protected def addListener[E](component: Any, map: Map[List[E], Map[Any, Buffer[FunctionSceneListener]]],  listener: FunctionSceneListener, e: List[E]) {
     if (!map.contains(e)) {
       map(e) = Map()
     }
@@ -90,7 +93,7 @@ trait EventGameScene extends GameScene {
     map(e)(component).append(listener)
   }
 
-  protected def removeListener[E](component: Any, map: Map[E, Map[Any, Buffer[FunctionSceneListener]]], e: E, listener: FunctionSceneListener) {
+  protected def removeListener[E](component: Any, map: Map[List[E], Map[Any, Buffer[FunctionSceneListener]]],  listener: FunctionSceneListener, e: List[E]) {
     if (map.contains(e) && map(e).contains(component)) {
       map(e)(component) -= (listener)
     }
@@ -98,3 +101,4 @@ trait EventGameScene extends GameScene {
   }
 
 }
+

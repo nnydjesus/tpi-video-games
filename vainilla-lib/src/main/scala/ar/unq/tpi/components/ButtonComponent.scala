@@ -12,7 +12,7 @@ class ButtonComponent[SceneType <: EventGameScene](sprite: Sprite, over: Sprite,
 	extends SpriteComponent[SceneType](sprite, x, y) {
   
   override def setScene(scene:SceneType){
-    scene.addMousePressetListener(this, MouseButton.LEFT, new FunctionSceneListener(onClick))
+    scene.addMousePressetListener(this, new FunctionSceneListener(onClick), MouseButton.LEFT)
   }
   
   override def update(deltaState: DeltaState) {
