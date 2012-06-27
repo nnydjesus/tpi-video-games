@@ -8,44 +8,51 @@ import com.uqbar.vainilla.DeltaState
 //}
 
 abstract class Movement {
-  def update(character:CharacterFight, deltaState:DeltaState){
-//      character.setY(character.baseY)
-  }
-}
-
-class AttackMovement() extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    character.attack(this)(deltaState)
-  }
-}
-
-case object SELECTED extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
+  def update(character: CharacterFight, deltaState: DeltaState, superUpdate:(DeltaState)=>Unit) {
+    if (character.isMoving) {
+      character.isMoving = !character.getAppearance().finish()
+      character.damageOponent()
+      superUpdate(deltaState)
+      if (!character.isMoving) {
+        character.getAppearance().reset()
+        character.changeMove(IDLE)
+      }
+    } else {
+      if (!character.player.update(deltaState)) {
+        superUpdate(deltaState)
+      }
+      character.updateOrientationRelativeToOponent()
+    }
     
+    restorePosition(character)
+
+  }
+  
+  def restorePosition(character: CharacterFight){
+      character.setY(character.baseY)
   }
 }
 
-case object IDLE extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
+class AttackMovement() extends Movement {
+  override def update(character: CharacterFight, deltaState: DeltaState, superUpdate:(DeltaState)=>Unit) {
+	character.attack(this)(deltaState)
+    super.update(character, deltaState, superUpdate)
   }
 }
 
-case object WALK extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
+case object SELECTED extends Movement {
 }
 
-case object WALK_BACK extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
+case object IDLE extends Movement {
 }
 
-case object KICKED extends Movement{
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    
-  }
+case object WALK extends Movement {
+}
+
+case object WALK_BACK extends Movement {
+}
+
+case object KICKED extends Movement {
 }
 
 case object HIGH_KICK1 extends AttackMovement
@@ -62,34 +69,37 @@ case object LOW_PUNCH1 extends AttackMovement
 
 case object LOW_KICK2 extends AttackMovement
 
-case object JUMP extends Movement{
-  var inUp = true
-  
-  override def update(character:CharacterFight, deltaState:DeltaState){
-    if(inUp && character.getY() > 0){
+case object JUMP extends Movement {
+
+  override def update(character: CharacterFight, deltaState: DeltaState, superUpdate:(DeltaState)=>Unit) {
+    if (character.inUp && character.getY() > 0) {
       character.isMoving = true
-      inUp = true
+      character.inUp = true
       character.move(0, -30)
-      character.getAppearance().advance()
-    }else{
-      if(character.getY() < character.baseY ){
-        inUp = false
+      character.getAppearance().setCurrentIndex(0)
+    } else {
+      if (character.getY() < character.baseY) {
+        character.inUp = false
         character.isMoving = true
         character.move(0, 30)
-        character.getAppearance().advance()
-      }else{
-//        character.getAppearance().advance()
+        character.getAppearance().setCurrentIndex(1)
+      } else {
+        //        character.getAppearance().advance()
         character.isMoving = false
-        inUp = true	
+        character.inUp = true
+        character.changeMove(IDLE)
       }
     }
+    
   }
+  
+  override def restorePosition(character: CharacterFight){}
 }
 
 case object COMBO1 extends AttackMovement
 
 object Orientation extends Enumeration {
- type Orientation = Value
+  type Orientation = Value
   var LEFT, RIGHT = Value
 
 }

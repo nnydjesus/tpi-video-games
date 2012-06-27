@@ -42,25 +42,23 @@ abstract class  Player(file:String) extends TraitResources{
 
 
   var _character: CharacterFight = null
+  
+  implicit def functionListener(f:(DeltaState) => Unit) = new FunctionSceneListener(f)
 
   def character = this._character
   def character_=(anCharacter: CharacterFight) = {
     this._character = anCharacter
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1.key, new FunctionSceneListener((d) => character.changeMove(HIGH_KICK1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2.key, new FunctionSceneListener((d) => character.changeMove(HIGH_KICK2)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1.key, new FunctionSceneListener((d) => character.changeMove(LOW_KICK1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2.key, new FunctionSceneListener((d) => character.changeMove(LOW_KICK2)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1.key, new FunctionSceneListener((d) => character.changeMove(LOW_PUNCH1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1.key, new FunctionSceneListener((d) => character.changeMove(HIGH_PUCH1)))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2.key, new FunctionSceneListener((d) => character.changeMove(LOW_PUNCH2)))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1.key, (d:DeltaState) => character.changeMove(HIGH_KICK1))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2.key, (d:DeltaState) => character.changeMove(HIGH_KICK2))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1.key, (d:DeltaState) => character.changeMove(LOW_KICK1))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2.key, (d:DeltaState) => character.changeMove(LOW_KICK2))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1.key, (d:DeltaState) => character.changeMove(LOW_PUNCH1))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1.key, (d:DeltaState) => character.changeMove(HIGH_PUCH1))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2.key, (d:DeltaState) => character.changeMove(LOW_PUNCH2))
+    anCharacter.scene.addKeyPressetListener(anCharacter, this.UP.key, (d:DeltaState) => character.changeMove(JUMP))
   }
 
   def update(deltaState: DeltaState): Boolean = {
-    if (deltaState.isKeyPressed(this.UP.key)) {
-      //dispatchEvent(new Event(GameEvents.MOVE_CABEZAL_UP, this, this.orientation))
-      character.changeMove(JUMP)
-      return false;
-    }
     if (deltaState.isKeyBeingHold(this.LEFT.key) && deltaState.isKeyBeingHold(this.RIGHT.key) && deltaState.isKeyBeingHold(this.K_HIGH_PUCH1.key)) {
       character.attack(COMBO1)(deltaState)
     } else if (deltaState.isKeyBeingHold(this.LEFT.key)) {
@@ -78,11 +76,10 @@ abstract class  Player(file:String) extends TraitResources{
   
   def saveConf(){
     var conf =
-    <Control>
-	 {
-            for (key <- keys) yield <key id={ key.name} key={key.key.getCode()}> </key>
-	 }
-	 </Control>
+    	<Control>{
+            	for (key <- keys) yield <key id={ key.name} key={key.key.getCode()}> </key>
+    	}</Control>
+    
     new File(PATH + fileName).text = conf.toString()
   }
   
@@ -125,7 +122,5 @@ class PlayerKey(var name: String, node: NodeSeq) extends EventGameComponent[Play
 
   def save(node: NodeSeq, futureKey: Key) {
     key = futureKey
-    //    node.foreach(a )
-    //    node.dropWhile(a => a.length>0) 
   }
 }

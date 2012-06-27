@@ -20,8 +20,8 @@ import com.uqbar.vainilla.Game
 class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, characterAppearance2: CharacterAppearance) extends GameScene with BoundsScene with EventGameScene with EventGameComponent[GamePlayScene] {
   var finish = false
 
-  var character1 = new CharacterFight(Player1, new Character(characterAppearance1), this, 200, 800)
-  var character2 = new CharacterFight(Player2, new Character(characterAppearance2), this, 1200, 800)
+  var character1 = new CharacterFight(Player1, new Character(characterAppearance1), this, 100, 800)
+  var character2 = new CharacterFight(Player2, new Character(characterAppearance2), this, 800, 800)
 
   val winAnimate = new AnimateSprite(GameImage.WIN_IMAGE)
   val loseAnimate = new AnimateSprite(GameImage.LOSE_IMAGE)
@@ -67,10 +67,10 @@ class GamePlayScene(game: Fight, characterAppearance1: CharacterAppearance, char
     character1.character.death = false
     character2.character.death = false
 
-    character1.setX(200)
+    character1.setX(100)
     character1.setY(800)
-    character2.setX(1200)
-    character2.setY(700)
+    character2.setX(900)
+    character2.setY(800)
 
     val roundComponent = new SpriteCenterComponent(this.state.animationRound, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 2)
     roundComponent.addEventListener(GameEvents.FINISH_ANIMATION, new FunctionEvent(onStart))

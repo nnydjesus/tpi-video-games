@@ -21,6 +21,7 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
   var delta = 500
   var currentMove: Movement = IDLE
   var pego = true
+  var inUp = true
 
   changeMove(IDLE)
 
@@ -88,27 +89,7 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
   }
 
   override def update(deltaState: DeltaState) = {
-  currentMove.update(this, deltaState)
-    if (isMoving) {
-      isMoving = !this.getAppearance().finish()
-      damageOponent()
-      super.update(deltaState)
-      if (!isMoving) {
-        this.getAppearance().reset()
-        changeMove(IDLE)
-      }
-    } else {
-      if (!player.update(deltaState)) {
-        super.update(deltaState)
-      }
-      updateOrientationRelativeToOponent()
-    }
-    
-    
-    if (currentMove != JUMP) {
-    	this.setY(baseY)
-    }
-
+	  currentMove.update(this, deltaState, super.update)
   }
   
   def updateOrientationRelativeToOponent() {
