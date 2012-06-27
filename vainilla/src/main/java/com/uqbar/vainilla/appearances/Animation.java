@@ -121,7 +121,7 @@ public class Animation implements Appearance {
 		return this.currentIndex;
 	}
 
-	protected void setCurrentIndex(int index) {
+	public void setCurrentIndex(int index) {
 		this.currentIndex = index;
 	}
 
