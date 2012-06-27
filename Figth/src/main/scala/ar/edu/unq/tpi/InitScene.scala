@@ -25,9 +25,9 @@ class InitScene extends GameScene() with EventGameScene with TraitResources with
     super.setGame(game)
     val background = new BackroundComponent(GameImage.LOGO, game.getDisplayWidth(), game.getDisplayHeight(), 0, 0)
     this.addComponent(background)
-    this.addKeyPressetListener(background, Key.DOWN, new FunctionSceneListener(next))
-    this.addKeyPressetListener(background, Key.UP, new FunctionSceneListener(prev))
-    this.addKeyPressetListener(background, Key.ENTER, new FunctionSceneListener(enter))
+    this.addKeyPressetListener(background, new FunctionSceneListener(next), Key.DOWN)
+    this.addKeyPressetListener(background, new FunctionSceneListener(prev), Key.UP)
+    this.addKeyPressetListener(background, new FunctionSceneListener(enter), Key.ENTER)
     this.buttonList = DoubleLinkedList(new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "1 Player"), 1300,500, onePlayer, true),
     new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "2 Player"), 1300,560, twoPlayer),
     new KeyboardTextComponent(GameImage.INIT_BUTTON, GameImage.INIT_BUTTON_OVER, new Label(Fonts.GODOFWAR.deriveFont(30f), Color.WHITE, "option"), 1300,615, options))

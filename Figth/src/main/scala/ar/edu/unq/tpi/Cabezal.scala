@@ -76,27 +76,27 @@ class Cabezal(animation: Animation) extends AnimationComponent[SelectCharacterSc
   }
 
   def removeListener() {
-    this.getScene().removeKeyPressetListener(this, player.UP.key, MOVE_TO_UP)
-    this.getScene().removeKeyPressetListener(this, player.DOWN.key, MOVE_TO_DOWN)
-    this.getScene().removeKeyPressetListener(this, player.LEFT.key, MOVE_TO_LEFT)
-    this.getScene().removeKeyPressetListener(this, player.RIGHT.key, MOVE_TO_RIGHT)
-    this.getScene().removeKeyPressetListener(this, player.ENTER.key, ACCEPT_SELECT_CHARACTER)
+    this.getScene().removeKeyPressetListener(this, MOVE_TO_UP, player.UP.key)
+    this.getScene().removeKeyPressetListener(this, MOVE_TO_DOWN, player.DOWN.key)
+    this.getScene().removeKeyPressetListener(this, MOVE_TO_LEFT, player.LEFT.key)
+    this.getScene().removeKeyPressetListener(this, MOVE_TO_RIGHT, player.RIGHT.key)
+    this.getScene().removeKeyPressetListener(this, ACCEPT_SELECT_CHARACTER, player.ENTER.key)
   }
 
   def configurationListener() {
 
-    this.getScene().addKeyPressetListener(this, player.UP.key, MOVE_TO_UP)
-    this.getScene().addKeyPressetListener(this, player.DOWN.key, MOVE_TO_DOWN)
-    this.getScene().addKeyPressetListener(this, player.LEFT.key, MOVE_TO_LEFT)
-    this.getScene().addKeyPressetListener(this, player.RIGHT.key, MOVE_TO_RIGHT)
-    this.getScene().addKeyPressetListener(this, player.ENTER.key, ACCEPT_SELECT_CHARACTER)
+    this.getScene().addKeyPressetListener(this, MOVE_TO_UP, player.UP.key)
+    this.getScene().addKeyPressetListener(this, MOVE_TO_DOWN, player.DOWN.key)
+    this.getScene().addKeyPressetListener(this, MOVE_TO_LEFT, player.LEFT.key)
+    this.getScene().addKeyPressetListener(this, MOVE_TO_RIGHT, player.RIGHT.key)
+    this.getScene().addKeyPressetListener(this, ACCEPT_SELECT_CHARACTER, player.ENTER.key)
   }
 
   def addListenerChangeCharacterSelected(){
-    this.getScene().addKeyPressetListener(this,player.ENTER.key, BACK_SELECT_CHARACTER)
+    this.getScene().addKeyPressetListener(this, BACK_SELECT_CHARACTER,player.ENTER.key)
   }
   def removeListenerChangeCharacterSelected(){
-    this.getScene().removeKeyPressetListener(this,player.ENTER.key, BACK_SELECT_CHARACTER)
+    this.getScene().removeKeyPressetListener(this, BACK_SELECT_CHARACTER,player.ENTER.key)
   }
   
   def backSelectedCharacter(){

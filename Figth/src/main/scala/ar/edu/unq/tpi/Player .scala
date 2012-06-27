@@ -48,23 +48,22 @@ abstract class  Player(file:String) extends TraitResources{
   def character = this._character
   def character_=(anCharacter: CharacterFight) = {
     this._character = anCharacter
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK1.key, (d:DeltaState) => character.changeMove(HIGH_KICK1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_KICK2.key, (d:DeltaState) => character.changeMove(HIGH_KICK2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK1.key, (d:DeltaState) => character.changeMove(LOW_KICK1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_KICK2.key, (d:DeltaState) => character.changeMove(LOW_KICK2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH1.key, (d:DeltaState) => character.changeMove(LOW_PUNCH1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_HIGH_PUCH1.key, (d:DeltaState) => character.changeMove(HIGH_PUCH1))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.K_LOW_PUNCH2.key, (d:DeltaState) => character.changeMove(LOW_PUNCH2))
-    anCharacter.scene.addKeyPressetListener(anCharacter, this.UP.key, (d:DeltaState) => character.changeMove(JUMP))
+	anCharacter.scene.addKeyBeingHoldListener(anCharacter, new FunctionSceneListener(character.attack(COMBO1)), this.LEFT.key, this.RIGHT.key, this.K_HIGH_PUCH1.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(HIGH_KICK1), this.K_HIGH_KICK1.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(HIGH_KICK2), this.K_HIGH_KICK2.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(LOW_KICK1), this.K_LOW_KICK1.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(LOW_KICK2), this.K_LOW_KICK2.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(LOW_PUNCH1), this.K_LOW_PUNCH1.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(HIGH_PUCH1), this.K_HIGH_PUCH1.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(LOW_PUNCH2), this.K_LOW_PUNCH2.key)
+    anCharacter.scene.addKeyPressetListener(anCharacter, (d:DeltaState) => character.changeMove(JUMP), this.UP.key)
+    anCharacter.scene.addKeyBeingHoldListener(anCharacter, (d:DeltaState) => character.walkLeft(d), this.LEFT.key)
+    anCharacter.scene.addKeyBeingHoldListener(anCharacter, (d:DeltaState) => character.walkRight(d), this.RIGHT.key)
   }
 
   def update(deltaState: DeltaState): Boolean = {
-    if (deltaState.isKeyBeingHold(this.LEFT.key) && deltaState.isKeyBeingHold(this.RIGHT.key) && deltaState.isKeyBeingHold(this.K_HIGH_PUCH1.key)) {
-      character.attack(COMBO1)(deltaState)
-    } else if (deltaState.isKeyBeingHold(this.LEFT.key)) {
-      character.walkLeft(deltaState)
+  if (deltaState.isKeyBeingHold(this.LEFT.key)) {
     } else if (deltaState.isKeyBeingHold(this.RIGHT.key)) {
-      character.walkRight(deltaState)
     } else {
       character.changeMove(IDLE)
       return false;

@@ -41,7 +41,6 @@ object Ragna extends CharacterAppearance {
     this.addMove(WALK, new FightMoves("wl", ragnaWalk, ragnaWalkXML, 1))
     this.addMove(WALK_BACK, new FightMoves("wr", ragnaWalk, ragnaWalkXML, 1))
     this.addMove(JUMP, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 2))
-    this.addMove(KICKED, new FightMoves("rg024_", ragnaWalk, ragnaWalkXML, 0, 0.05))
     this.name = "Ragna"
   }
 
@@ -57,6 +56,9 @@ object Ragna extends CharacterAppearance {
 
     var ragnaGolpe2 = sprite("ragna/golpe2.png")
     var ragnaGolpe2XML = xmlFromFile("img/ragna/golpe2.xml")
+    
+    var ragnaKicked = sprite("ragna/damage.png")
+    var ragnaKickedXML = xmlFromFile("img/ragna/damage.xml")
 
     var ragnaPatadas1 = sprite("ragna/patada1.png")
     var ragnaPatadas1XML = xmlFromFile("img/ragna/patada1.xml")
@@ -79,6 +81,7 @@ object Ragna extends CharacterAppearance {
     this.addMove(LOW_PUNCH1, new FightMoves("rg230_", ragnaGolpe2, ragnaGolpe2XML, 10))
 
     this.addMove(COMBO1, new FightMoves("rg212_", ragnaCombos, ragnaCombosXML, 10))
+    this.addMove(KICKED, new FightMoves("rg050_", ragnaKicked, ragnaKickedXML, 0, 0.05))
 
     //FAKE    
     //  this.addMove(HIGH_KICK1, new IdleMoves("rg000_", ragnaWalk, ragnaWalkXML, 0, 0.05))

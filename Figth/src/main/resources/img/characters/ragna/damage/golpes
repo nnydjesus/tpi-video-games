@@ -1,0 +1,52 @@
+{"frames": {
+
+"rg050_00.png":
+{
+	"frame": {"x":2,"y":2,"w":567,"h":454},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":567,"h":454},
+	"sourceSize": {"w":567,"h":454}
+},
+"rg050_01.png":
+{
+	"frame": {"x":571,"y":2,"w":567,"h":454},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":567,"h":454},
+	"sourceSize": {"w":567,"h":454}
+},
+"rg050_02.png":
+{
+	"frame": {"x":1140,"y":2,"w":567,"h":454},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":567,"h":454},
+	"sourceSize": {"w":567,"h":454}
+},
+"rg050_03.png":
+{
+	"frame": {"x":2,"y":458,"w":567,"h":454},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":567,"h":454},
+	"sourceSize": {"w":567,"h":454}
+},
+"rg050_04.png":
+{
+	"frame": {"x":571,"y":458,"w":567,"h":454},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":567,"h":454},
+	"sourceSize": {"w":567,"h":454}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "golpes.png",
+	"format": "RGBA8888",
+	"size": {"w":1709,"h":914},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:3fe968a6f4a59bd1b78509b92fe66634$"
+}
+}

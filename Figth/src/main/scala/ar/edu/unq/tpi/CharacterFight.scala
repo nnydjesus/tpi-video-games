@@ -103,6 +103,7 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
   def baseY = staticY - this.getAppearance().getHeight() + 120
 
   def walkLeft(deltaState: DeltaState) {
+    if(isMoving) return
     val moveX = -delta * deltaState.getDelta()
     this.move(moveX, 0)
     if (orientation.equals(Orientation.LEFT)) {
@@ -127,6 +128,7 @@ class CharacterFight(var player: Player, var character: Character, var scene: Ga
   }
 
   def walkRight(deltaState: DeltaState) {
+    if(isMoving) return
     val moveX = delta * deltaState.getDelta()
     this.move(moveX, 0)
     if (orientation.equals(Orientation.LEFT)) {
