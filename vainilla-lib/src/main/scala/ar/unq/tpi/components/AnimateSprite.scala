@@ -12,24 +12,28 @@ class AnimateSprite(var originalImage: BufferedImage) extends Sprite(originalIma
   var scale = 0.5
 
   override def update(delta: Double) {
-    if(scale <1){
-    	this.setImage(originalImage)
-    	this.setImage(this.getTransformedImage(AffineTransform.getScaleInstance(scale , scale )))
-    	scale = scale +0.1
+    if (scale < 1) {
+      this.setImage(originalImage)
+      this.setImage(this.getTransformedImage(AffineTransform.getScaleInstance(scale, scale)))
+      scale = scale + 0.1
     }
-    
+
   }
-  
+
 }
 
-trait CenterComponent[SceneType <:GameScene, A <:Appearance] extends GameComponent[SceneType , A]{
-  
-  val width:Double
-  val height:Double
-  
+trait CenterComponent[SceneType <: GameScene, A <: Appearance] extends GameComponent[SceneType, A] {
+
+  val twidth: Double
+  val theight: Double
+
   override def update(deltaState: DeltaState) = {
-      super.update(deltaState)
-      this.setX((width/2) - (this.getAppearance().getWidth() / 2))
-      this.setY((height/2) - (this.getAppearance().getHeight() / 2))
-    }
+    super.update(deltaState)
+    center()
+  }
+
+  def center() {
+    this.setX((twidth / 2) - (this.getAppearance().getWidth() / 2))
+    this.setY((theight / 2) - (this.getAppearance().getHeight() / 2))
+  }
 }

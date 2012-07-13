@@ -22,7 +22,7 @@ object ScaleSpriteComponent{
   def scale(sprite:Sprite, width:Double, height:Double) = sprite.scale(width/sprite.getWidth(), height/sprite.getHeight())  
 }
 
-class SpriteCenterComponent[SceneType <:GameScene](sprite:Sprite,override val width:Double, override val height:Double ) extends SpriteComponent[SceneType](sprite, 0,0) 
+class SpriteCenterComponent[SceneType <:GameScene](sprite:Sprite,override val twidth:Double, override val theight:Double ) extends SpriteComponent[SceneType](sprite, 0,0) 
 		with CenterComponent[SceneType, Sprite] {}
 
 
