@@ -1,3 +1,28 @@
 <Control>
-	 <key key="A" id="LEFT"> </key><key key="D" id="RIGHT"> </key><key key="W" id="UP"> </key><key key="S" id="DOWN"> </key><key key="O" id="ENTER"> </key><key key="T" id="K_HIGH_KICK1"> </key><key key="U" id="K_HIGH_KICK2"> </key><key key="G" id="K_HIGH_PUNCH1"> </key><key key="J" id="K_HIGH_PUNCH2"> </key><key key="Y" id="K_LOW_KICK1"> </key><key key="I" id="K_LOW_KICK2"> </key><key key="H" id="K_LOW_PUNCH1"> </key><key key="K" id="K_LOW_PUNCH2"> </key>
-	 </Control>
+	<key key="A" id="LEFT">
+	</key>
+	<key key="D" id="RIGHT">
+	</key>
+	<key key="W" id="UP">
+	</key>
+	<key key="S" id="DOWN">
+	</key>
+	<key key="O" id="ENTER">
+	</key>
+	<key key="T" id="K_HIGH_KICK1">
+	</key>
+	<key key="U" id="K_HIGH_KICK2">
+	</key>
+	<key key="G" id="K_HIGH_PUNCH1">
+	</key>
+	<key key="J" id="K_HIGH_PUNCH2">
+	</key>
+	<key key="Y" id="K_LOW_KICK1">
+	</key>
+	<key key="I" id="K_LOW_KICK2">
+	</key>
+	<key key="H" id="K_LOW_PUNCH1">
+	</key>
+	<key key="K" id="K_LOW_PUNCH2">
+	</key>
+</Control>
