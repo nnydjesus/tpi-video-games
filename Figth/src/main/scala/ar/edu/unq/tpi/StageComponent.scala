@@ -19,14 +19,14 @@ class StageComponent(sprite: Sprite, width: Double, height: Double) extends Spri
   }
 
   def configurationListener() {
-    this.getScene().addKeyPressetListener(this, player.LEFT.key, CHANGE_STAGE_LEFT)
-    this.getScene().addKeyPressetListener(this, player.RIGHT.key, CHANGE_STAGE_RIGHT)
-    this.getScene().addKeyPressetListener(this, player.ENTER.key, ACCEPT_STAGE)
+    this.getScene().addKeyPressetListener(this, CHANGE_STAGE_LEFT, player.LEFT.key)
+    this.getScene().addKeyPressetListener(this, CHANGE_STAGE_RIGHT, player.RIGHT.key)
+    this.getScene().addKeyPressetListener(this, ACCEPT_STAGE, player.ENTER.key)
   }
   def removeListener() {
-    this.getScene().removeKeyPressetListener(this, player.LEFT.key, CHANGE_STAGE_LEFT)
-    this.getScene().removeKeyPressetListener(this, player.RIGHT.key, CHANGE_STAGE_RIGHT)
-    this.getScene().removeKeyPressetListener(this, player.ENTER.key, ACCEPT_STAGE)
+    this.getScene().removeKeyPressetListener(this, CHANGE_STAGE_LEFT, player.LEFT.key)
+    this.getScene().removeKeyPressetListener(this, CHANGE_STAGE_RIGHT, player.RIGHT.key)
+    this.getScene().removeKeyPressetListener(this, ACCEPT_STAGE, player.ENTER.key)
   }
 
   def changeNextStage() {

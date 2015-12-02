@@ -19,10 +19,10 @@ class LoadingScene(characterAppearance1: CharacterAppearance, characterAppearanc
   override def setGame(game: Game) {
     super.setGame(game)
     this.addComponent(new GameComponent(new Rectangle(Color.BLACK, getGame().getDisplayWidth(), getGame().getDisplayHeight()), 0, 0))
-    this.addComponent(new SpriteCenterComponent(GameImage.LOADING_B, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 0))
+    this.addComponent(new SpriteCenterComponent(GameImage.LOADING_B, getGame().getDisplayWidth(), getGame().getDisplayHeight()))
     this.addComponent(new SpriteComponent(characterAppearance1.vsImage, 180, 200))
     this.addComponent(new SpriteComponent(characterAppearance2.vsImage, 900, 200))
-    this.addComponent(new SpriteCenterComponent(GameImage.LOADING, getGame().getDisplayWidth(), getGame().getDisplayHeight(), 0))
+    this.addComponent(new SpriteCenterComponent(GameImage.LOADING, getGame().getDisplayWidth(), getGame().getDisplayHeight()))
     load()
   }
 

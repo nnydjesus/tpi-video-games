@@ -35,7 +35,7 @@ object Token{
   
   def valueByColor(color:Color) = valuesByColor(color)
 }
- case class Token(var color:Color, var action:(PlayScene, Int, Int)=>Unit){
+ class Token(var color:Color, var action:(PlayScene, Int, Int)=>Unit){
   
   def this(name:String, color:Color, action:(PlayScene, Int, Int)=>Unit){
     this(color, action)

@@ -68,7 +68,7 @@ class SelectCharacterScene(game: Fight) extends SelectScene() with EventGameComp
   }
 
   def createStageSelected() {
-    for (i <- 1 until 5) {
+    for (i <- 1 until 3) {
       stages(i - 1) = sprite("stage" + i + ".png")
     }
   }

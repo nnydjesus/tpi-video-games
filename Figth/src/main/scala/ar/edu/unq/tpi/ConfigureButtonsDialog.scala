@@ -42,7 +42,7 @@ class ConfigureButtonsDialog() extends Dialog {
 }
 
 class PlayerPanel(player: Player) extends GridBagPanel {
-  size = new Dimension(300, 400)
+  preferredSize = new Dimension(300, 400)
   val gbc = new Constraints()
   gbc.gridx = 0
   gbc.gridy = 0

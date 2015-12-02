@@ -1,12 +1,10 @@
 package ar.edu.unq.tpi.ranking
 import java.io.ObjectInputStream
-import scala.annotation.serializable
 import scala.collection.mutable.Buffer
 import ar.edu.unq.tpi.resource.TraitResources
 import java.io.ObjectOutputStream
 import Ordering.Implicits._
 
-@serializable
 class Ranking {
   
   var ranking:Buffer[PlayersRanking] = null
@@ -24,7 +22,6 @@ class Ranking {
 
 }
 
-@serializable
 class PlayersRanking(var name:String, var score:Double) extends Ordered[PlayersRanking]{
   def compare(that: PlayersRanking) = that.score.compare(score)
 
